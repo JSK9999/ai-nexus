@@ -1,0 +1,50 @@
+{
+  "name": "ai-rules",
+  "version": "0.0.0-development",
+  "description": "AI coding assistant rule manager for Claude Code and Codex",
+  "main": "dist/index.js",
+  "bin": {
+    "ai-rules": "bin/ai-rules.cjs"
+  },
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "vitest",
+    "lint": "eslint src/",
+    "prepare": "npm run build"
+  },
+  "keywords": [
+    "claude",
+    "codex",
+    "ai",
+    "rules",
+    "cli",
+    "coding-assistant"
+  ],
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JSK9999/ai-rules.git"
+  },
+  "files": [
+    "bin/",
+    "dist/",
+    "config/"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "commander": "^12.0.0",
+    "inquirer": "^9.2.0",
+    "ora": "^8.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "typescript": "^5.3.0",
+    "vitest": "^1.0.0"
+  }
+}
