@@ -1,5 +1,7 @@
 import fs from 'fs';
 import path from 'path';
+import chalk from 'chalk';
+import inquirer from 'inquirer';
 import { detectInstall, scanDir, compareConfigs, ensureDir } from '../utils/files.js';
 import { updateRepo } from '../utils/git.js';
 
@@ -15,7 +17,13 @@ interface DotrulesMeta {
   updatedAt: string;
 }
 
-export async function update(): Promise<void> {
+export interface UpdateOptions {
+  force?: boolean;      // 모든 파일 덮어쓰기
+  addOnly?: boolean;    // 새 파일만 추가
+  interactive?: boolean; // 파일별로 선택
+}
+
+export async function update(options: UpdateOptions = {}): Promise<void> {
   const install = detectInstall();
 
   if (!install) {
@@ -79,27 +87,100 @@ export async function update(): Promise<void> {
       return;
     }
 
-    console.log('\n   Changes:');
-    if (diff.added.length > 0) console.log(`   + ${diff.added.length} new files`);
-    if (diff.modified.length > 0) console.log(`   ~ ${diff.modified.length} modified files`);
-    if (diff.removed.length > 0) console.log(`   - ${diff.removed.length} removed files`);
+    console.log('\n   Changes detected:');
+    if (diff.added.length > 0) console.log(chalk.green(`   + ${diff.added.length} new files`));
+    if (diff.modified.length > 0) console.log(chalk.yellow(`   ~ ${diff.modified.length} modified files`));
+    if (diff.removed.length > 0) console.log(chalk.red(`   - ${diff.removed.length} removed in source`));
+
+    // Determine which files to update
+    let filesToAdd = diff.added;
+    let filesToUpdate: string[] = [];
+    let filesToRemove: string[] = [];
+
+    if (options.force) {
+      // Force mode: update everything
+      filesToUpdate = diff.modified;
+      filesToRemove = diff.removed;
+    } else if (options.addOnly) {
+      // Add-only mode: only add new files
+      filesToUpdate = [];
+      filesToRemove = [];
+    } else if (options.interactive && diff.modified.length > 0) {
+      // Interactive mode: ask for each modified file
+      console.log(chalk.cyan('\n   Modified files (choose which to overwrite):\n'));
+
+      const { selectedFiles } = await inquirer.prompt<{ selectedFiles: string[] }>([
+        {
+          type: 'checkbox',
+          name: 'selectedFiles',
+          message: 'Select files to overwrite',
+          choices: diff.modified.map(f => ({
+            name: f,
+            value: f,
+            checked: false,
+          })),
+        },
+      ]);
+      filesToUpdate = selectedFiles;
+
+      if (diff.removed.length > 0) {
+        const { removeFiles } = await inquirer.prompt<{ removeFiles: boolean }>([
+          {
+            type: 'confirm',
+            name: 'removeFiles',
+            message: `Remove ${diff.removed.length} files that no longer exist in source?`,
+            default: false,
+          },
+        ]);
+        filesToRemove = removeFiles ? diff.removed : [];
+      }
+    } else {
+      // Default: add new files, skip modified, keep removed
+      // (merge mode)
+      filesToUpdate = [];
+      filesToRemove = [];
+
+      if (diff.modified.length > 0) {
+        console.log(chalk.gray(`\n   Skipping ${diff.modified.length} modified files (use --force to overwrite)`));
+      }
+    }
 
     // Apply changes
-    for (const rel of [...diff.added, ...diff.modified]) {
+    let addedCount = 0;
+    let updatedCount = 0;
+    let removedCount = 0;
+
+    for (const rel of filesToAdd) {
       const src = path.join(configDir, rel);
       const dest = path.join(claudeDir, rel);
       ensureDir(path.dirname(dest));
       fs.copyFileSync(src, dest);
+      addedCount++;
     }
 
-    for (const rel of diff.removed) {
+    for (const rel of filesToUpdate) {
+      const src = path.join(configDir, rel);
+      const dest = path.join(claudeDir, rel);
+      ensureDir(path.dirname(dest));
+      fs.copyFileSync(src, dest);
+      updatedCount++;
+    }
+
+    for (const rel of filesToRemove) {
       const dest = path.join(claudeDir, rel);
       if (fs.existsSync(dest)) {
         fs.unlinkSync(dest);
+        removedCount++;
       }
     }
 
-    hasChanges = true;
+    if (addedCount > 0 || updatedCount > 0 || removedCount > 0) {
+      console.log('\n   Applied:');
+      if (addedCount > 0) console.log(chalk.green(`   + ${addedCount} files added`));
+      if (updatedCount > 0) console.log(chalk.yellow(`   ~ ${updatedCount} files updated`));
+      if (removedCount > 0) console.log(chalk.red(`   - ${removedCount} files removed`));
+      hasChanges = true;
+    }
   }
 
   // Update metadata

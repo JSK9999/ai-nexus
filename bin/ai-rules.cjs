@@ -48,9 +48,12 @@ program
 program
   .command('update')
   .description('Update installed rules to latest version')
-  .action(async () => {
+  .option('-f, --force', 'Overwrite all modified files')
+  .option('-a, --add-only', 'Only add new files, never overwrite')
+  .option('-i, --interactive', 'Choose which files to overwrite')
+  .action(async (options) => {
     const { update } = await import('../dist/commands/update.js');
-    await update();
+    await update(options);
   });
 
 program
