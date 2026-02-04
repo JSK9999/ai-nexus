@@ -17,9 +17,16 @@ program
   .description('Initialize rules in current project (.claude/, .codex/)')
   .option('--rules <url>', 'Git repository URL for rules (e.g., github.com/org/my-rules)')
   .option('--copy', 'Copy files instead of symlink')
+  .option('-i, --interactive', 'Use interactive mode with file selection')
+  .option('-y, --yes', 'Skip prompts and use defaults')
   .action(async (options) => {
-    const { init } = await import('../dist/commands/init.js');
-    await init({ scope: 'project', ...options });
+    if (options.interactive) {
+      const { initInteractive } = await import('../dist/commands/init-interactive.js');
+      await initInteractive();
+    } else {
+      const { init } = await import('../dist/commands/init.js');
+      await init({ scope: 'project', ...options });
+    }
   });
 
 program
@@ -27,9 +34,15 @@ program
   .description('Install rules globally (~/.claude/, ~/.codex/)')
   .option('--rules <url>', 'Git repository URL for rules')
   .option('--copy', 'Copy files instead of symlink')
+  .option('-i, --interactive', 'Use interactive mode with file selection')
   .action(async (options) => {
-    const { init } = await import('../dist/commands/init.js');
-    await init({ scope: 'global', ...options });
+    if (options.interactive) {
+      const { initInteractive } = await import('../dist/commands/init-interactive.js');
+      await initInteractive();
+    } else {
+      const { init } = await import('../dist/commands/init.js');
+      await init({ scope: 'global', ...options });
+    }
   });
 
 program
@@ -63,6 +76,23 @@ program
   .action(async (name) => {
     const { remove } = await import('../dist/commands/remove.js');
     await remove(name);
+  });
+
+program
+  .command('test [input]')
+  .description('Test which rules will be loaded for given input')
+  .option('--keyword', 'Use keyword matching only (skip AI)')
+  .option('--list', 'List all registered keywords')
+  .action(async (input, options) => {
+    const { test, testKeywords } = await import('../dist/commands/test.js');
+    if (options.list) {
+      await testKeywords();
+    } else if (input) {
+      await test(input, options);
+    } else {
+      console.log('Usage: ai-rules test <input> [--keyword]');
+      console.log('       ai-rules test --list');
+    }
   });
 
 program.parse();

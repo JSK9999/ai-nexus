@@ -1,7 +1,11 @@
 export * from './utils/files.js';
 export * from './utils/git.js';
+export * from './utils/semantic-router.js';
+export * from './utils/config-scanner.js';
 export { init } from './commands/init.js';
+export { initInteractive } from './commands/init-interactive.js';
 export { update } from './commands/update.js';
 export { list } from './commands/list.js';
 export { add } from './commands/add.js';
 export { remove } from './commands/remove.js';
+export { test, testKeywords } from './commands/test.js';
