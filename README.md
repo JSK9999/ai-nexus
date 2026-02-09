@@ -1,114 +1,105 @@
 # ai-rules
 
-AI coding assistant rule manager for **Claude Code**, **Codex**, and **Cursor**.
+> Stop wasting tokens. Load only the rules you need.
 
-Manage, share, and sync rules across teams via Git repositories.
+AI coding assistant rule manager for **Claude Code**, **Cursor**, and **Codex**.
+
+[![npm version](https://img.shields.io/npm/v/ai-rules.svg)](https://www.npmjs.com/package/ai-rules)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+```bash
+npx ai-rules install
+```
+
+---
+
+## The Problem
+
+Every time you ask Claude Code a question, it loads **all** your rules:
+
+```
+Loading rules... 4,300 lines
+Token cost: ~5,000 tokens per request
+```
+
+That's tokens wasted on React rules when you're asking about Git commits.
+
+## The Solution
+
+**ai-rules** uses a semantic router to load only relevant rules:
+
+```
+You: "Write a commit message"
+
+Semantic Router activates:
+  ✓ commit.md (needed)
+  ✓ essential.md (always on)
+  ✗ react.md (skipped)
+  ✗ security.md (skipped)
+
+Token cost: ~800 tokens (84% savings)
+```
+
+---
 
 ## Quick Start
 
 ```bash
-# Install with built-in rules (interactive mode)
+# Interactive setup (recommended)
 npx ai-rules install -i
 
-# Or quick install
+# Quick install with defaults
 npx ai-rules install
 
 # Use your team's rules
-npx ai-rules install --rules github.com/your-org/your-rules
+npx ai-rules install --rules github.com/your-org/team-rules
 ```
-
-## Why ai-rules?
-
-**Problem**: AI coding assistants load all rules on every request, wasting tokens.
-
-**Solution**: Organize rules with semantic routing that loads only needed rules.
-
-| Before | After |
-|--------|-------|
-| 4,300 lines loaded every time | Only needed rules loaded |
-| Each developer manages own rules | Team shares rules via Git |
-| No sync when rules update | `ai-rules update` syncs all |
-
-## Supported Tools
-
-| Tool | Support | Features |
-|------|---------|----------|
-| Claude Code | ✅ | Semantic Router (dynamic loading) |
-| Cursor | ✅ | Semantic Search (.mdc files) |
-| Codex | ✅ | Static AGENTS.md |
-
-## Commands
-
-| Command | Description |
-|---------|-------------|
-| `init` | Initialize rules in current project |
-| `init -i` | Interactive mode with file selection |
-| `install` | Install rules globally |
-| `update` | Update rules to latest version |
-| `list` | List installed rules |
-| `add <url>` | Add rules from a Git repository |
-| `remove <name>` | Remove a rule source |
-| `test <input>` | Test which rules will be loaded |
 
 ---
 
-## Semantic Router (Claude Code)
+## Supported Tools
 
-The Semantic Router dynamically activates only the rules needed for each prompt.
+| Tool | How it works | Token Savings |
+|------|--------------|---------------|
+| **Claude Code** | Semantic Router dynamically swaps rules per prompt | ~84% |
+| **Cursor** | Semantic Search via `.mdc` description fields | ~70% |
+| **Codex** | Static `AGENTS.md` (no dynamic loading) | - |
 
-### How It Works
+---
 
-```
-User: "Write a commit message"
-       ↓
-Semantic Router analyzes prompt
-       ↓
-Activates: commit.md, essential.md
-Deactivates: react.md, security.md (not needed)
-       ↓
-Token savings: ~84%
-```
+## How It Works
 
-### Setup
+### Claude Code: Semantic Router
 
-When you install with ai-rules, the hook is automatically set up:
+A hook runs on every prompt, analyzing what rules you actually need:
 
 ```
 ~/.claude/
 ├── hooks/
-│   └── semantic-router.cjs  ← Runs on each prompt
-├── settings.json            ← Hook configuration
-└── rules/                   ← Active rules
+│   └── semantic-router.cjs   # Runs on each prompt
+├── settings.json             # Hook configuration
+├── rules/                    # Active rules
+└── rules-inactive/           # Parked rules (not loaded)
 ```
 
-### Environment Variables
-
+**With AI routing** (recommended):
 ```bash
-# Enable AI-based routing (uses OpenAI or Anthropic)
-SEMANTIC_ROUTER_ENABLED=true
-OPENAI_API_KEY=sk-xxx
-# or
-ANTHROPIC_API_KEY=sk-ant-xxx
+export OPENAI_API_KEY=sk-xxx        # or ANTHROPIC_API_KEY
+export SEMANTIC_ROUTER_ENABLED=true
 ```
 
-Without API keys, falls back to keyword matching.
+GPT-4o-mini or Claude Haiku analyzes your prompt and picks the right rules. Cost: ~$0.50/month.
 
----
+**Without AI** (fallback):
+Keyword matching activates rules based on words in your prompt.
 
-## Cursor Support
+### Cursor: Semantic Search
 
-Cursor uses `.mdc` files with semantic search based on `description` fields.
-
-```bash
-npx ai-rules init -i
-# Select "Cursor" in tool selection
-```
-
-Rules are automatically converted to `.mdc` format:
+Rules are converted to `.mdc` format with description metadata:
 
 ```markdown
 ---
-description: Commit message conventions
+description: Git commit message conventions and best practices
 alwaysApply: false
 ---
 
@@ -116,72 +107,67 @@ alwaysApply: false
 ...
 ```
 
+Cursor's built-in semantic search loads rules based on relevance.
+
+### Codex: Static Rules
+
+A single `AGENTS.md` file is loaded at session start. No dynamic loading.
+
 ---
 
-## Using Team Rules
+## Commands
 
-### Option 1: Install with --rules
+| Command | Description |
+|---------|-------------|
+| `install` | Install rules globally (`~/.claude/`) |
+| `install -i` | Interactive mode - choose tools, rules, template |
+| `init` | Install in current project (`.claude/`) |
+| `update` | Sync latest rules (respects local changes) |
+| `list` | Show installed rules |
+| `test <prompt>` | Preview which rules would load |
+| `add <url>` | Add rules from a Git repository |
+| `remove <name>` | Remove a rule source |
 
-```bash
-# Project-level (current directory)
-npx ai-rules init --rules github.com/your-org/team-rules
+---
 
-# Global (~/.claude/)
-npx ai-rules install --rules github.com/your-org/team-rules
-```
+## Team Rules
 
-### Option 2: Add rules later
-
-```bash
-npx ai-rules add github.com/your-org/security-rules
-npx ai-rules add github.com/your-org/react-rules --name react
-```
-
-### Updating rules
+Share rules across your team via Git:
 
 ```bash
-# Pull latest from all Git sources and sync
+# Everyone installs from the same source
+npx ai-rules install --rules github.com/acme/team-rules
+
+# When rules are updated
 npx ai-rules update
 ```
 
----
-
-## Creating a Rules Repository
-
-Your rules repository should have this structure:
+### Creating a Rules Repository
 
 ```
-your-rules/
+team-rules/
 ├── config/
-│   ├── rules/          # Always loaded
-│   │   └── essential.md
-│   ├── commands/       # Slash commands (/commit)
-│   │   └── commit.md
-│   ├── skills/         # Domain knowledge (react, rust)
-│   │   └── react.md
-│   ├── agents/         # Sub-agent definitions
-│   │   └── reviewer.md
-│   ├── contexts/       # Context files (@dev)
-│   │   └── dev.md
-│   ├── hooks/          # Semantic router hook
-│   │   └── semantic-router.cjs
-│   └── settings.json   # Claude Code hook config
+│   ├── rules/           # Core rules (essential.md, security.md)
+│   ├── commands/        # Slash commands (/commit, /review)
+│   ├── skills/          # Domain knowledge (react.md, rust.md)
+│   ├── agents/          # Sub-agents (code-reviewer.md)
+│   ├── contexts/        # Context files (@dev, @research)
+│   ├── hooks/           # semantic-router.cjs
+│   └── settings.json    # Claude Code hook config
 └── README.md
 ```
 
-### Rule file format
+### Rule Format
 
 ```markdown
 ---
-description: When this rule should be loaded
+description: When to load this rule (used by semantic router)
 ---
 
 # Rule Title
 
-Your rule content here...
+Your rule content...
 ```
-
-The `description` field helps AI assistants decide when to load the rule.
 
 ---
 
@@ -193,9 +179,8 @@ The `description` field helps AI assistants decide when to load the rule.
 npx ai-rules install
 ```
 
-- Rules are symlinked to source
-- `update` instantly syncs changes
-- Cannot modify rules directly
+- Rules link to source → `update` syncs instantly
+- Cannot edit rules directly (edit source instead)
 
 ### Copy
 
@@ -203,75 +188,84 @@ npx ai-rules install
 npx ai-rules install --copy
 ```
 
-- Rules are copied as files
-- Can modify rules locally
-- `update` respects local changes (adds new files only)
+- Rules are independent copies
+- Can edit locally
+- `update` only adds new files, never overwrites
 
 ---
 
 ## Local Priority
 
-ai-rules respects your local customizations:
+Your customizations are always safe:
 
-- **Existing files are never overwritten** during install/update
-- Only new files from the source are added
-- Use `--force` with update to overwrite all files
+- **Existing files are never overwritten** during install or update
+- Only new files from source are added
+- Use `--force` to override (backup first!)
 
----
+```bash
+# This will NOT overwrite your custom commit.md
+npx ai-rules update
 
-## How It Works
-
-```
-.ai-rules/              # ai-rules data
-├── config/             # Merged rules from all sources
-├── sources/            # Git repositories
-│   ├── team-rules/
-│   └── security-rules/
-└── meta.json           # Installation metadata
-
-.claude/                # Claude Code reads from here
-├── hooks/              # Semantic router
-├── settings.json       # Hook configuration
-├── rules/       → symlink or copy
-├── commands/    → symlink or copy
-└── ...
-
-.cursor/                # Cursor reads from here
-└── rules/
-    ├── essential.mdc
-    └── commit.mdc
+# This WILL overwrite everything
+npx ai-rules update --force
 ```
 
 ---
 
-## Example Workflows
+## Directory Structure
+
+```
+.ai-rules/                    # ai-rules metadata
+├── config/                   # Merged rules from all sources
+├── sources/                  # Cloned Git repositories
+└── meta.json                 # Installation info
+
+.claude/                      # Claude Code
+├── hooks/semantic-router.cjs
+├── settings.json
+├── rules/          → .ai-rules/config/rules
+└── commands/       → .ai-rules/config/commands
+
+.cursor/rules/                # Cursor (.mdc files)
+├── essential.mdc
+└── commit.mdc
+
+.codex/AGENTS.md              # Codex
+```
+
+---
+
+## Examples
+
+### Personal Setup
+
+```bash
+npx ai-rules install -i
+# Select: Claude Code, Cursor
+# Select: rules, commands, hooks, settings
+# Template: React/Next.js
+# Mode: symlink
+```
 
 ### Team Setup
 
 ```bash
-# 1. Create rules repo on GitHub
-# 2. Each team member:
-npx ai-rules install --rules github.com/acme/claude-rules
+# 1. Create team rules repo on GitHub
 
-# 3. When rules update:
+# 2. Each developer:
+npx ai-rules install --rules github.com/acme/team-rules
+
+# 3. Weekly sync:
 npx ai-rules update
 ```
 
-### Multi-tool Setup
+### Multi-Source Setup
 
 ```bash
-# Install for all tools
-npx ai-rules install -i
-# Select: Claude Code, Codex, Cursor
-```
-
-### Multi-source Setup
-
-```bash
-# Base rules from company
+# Base company rules
 npx ai-rules install --rules github.com/acme/base-rules
 
-# Add team-specific rules
+# Add frontend team rules
 npx ai-rules add github.com/acme/frontend-rules
 
 # Add security rules
@@ -280,6 +274,32 @@ npx ai-rules add github.com/acme/security-rules
 # Update all at once
 npx ai-rules update
 ```
+
+---
+
+## Testing
+
+Preview which rules would load for a given prompt:
+
+```bash
+$ npx ai-rules test "write a react component with hooks"
+
+Selected rules (3):
+  • rules/essential.md
+  • rules/react.md
+  • skills/react.md
+```
+
+---
+
+## Contributing
+
+1. Fork & clone
+2. `npm install`
+3. Edit rules in `config/`
+4. `npm run build`
+5. Test: `node bin/ai-rules.cjs list`
+6. PR!
 
 ---
 
