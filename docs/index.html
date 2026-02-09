@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ai-rules - Stop wasting tokens</title>
+  <meta name="description" content="AI coding assistant rule manager for Claude Code, Cursor, and Codex. Load only the rules you need.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --bg-secondary: #141414;
+      --bg-tertiary: #1a1a1a;
+      --text: #fafafa;
+      --text-secondary: #a1a1a1;
+      --accent: #3b82f6;
+      --accent-hover: #60a5fa;
+      --green: #22c55e;
+      --yellow: #eab308;
+      --red: #ef4444;
+      --border: #262626;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Header */
+    header {
+      padding: 20px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    /* Hero */
+    .hero {
+      padding: 120px 0 80px;
+      text-align: center;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      padding: 6px 12px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      font-size: 3.5rem;
+      font-weight: 700;
+      margin-bottom: 24px;
+      line-height: 1.1;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(135deg, var(--accent), #a855f7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 1.25rem;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto 40px;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 14px 28px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.2s;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-hover);
+    }
+
+    .btn-secondary {
+      background: var(--bg-secondary);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: var(--bg-tertiary);
+    }
+
+    /* Code Block */
+    .code-block {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 24px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.95rem;
+      max-width: 500px;
+      margin: 40px auto 0;
+      text-align: left;
+    }
+
+    .code-block .prompt {
+      color: var(--text-secondary);
+    }
+
+    .code-block .command {
+      color: var(--green);
+    }
+
+    /* Stats */
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 60px;
+      padding: 60px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .stat-label {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-top: 4px;
+    }
+
+    /* Problem/Solution */
+    .problem-solution {
+      padding: 100px 0;
+    }
+
+    .section-title {
+      font-size: 2rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .comparison {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .comparison-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+    }
+
+    .comparison-card.before {
+      border-color: var(--red);
+    }
+
+    .comparison-card.after {
+      border-color: var(--green);
+    }
+
+    .comparison-card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .comparison-card.before h3 {
+      color: var(--red);
+    }
+
+    .comparison-card.after h3 {
+      color: var(--green);
+    }
+
+    .comparison-card pre {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      white-space: pre-wrap;
+      line-height: 1.8;
+    }
+
+    .comparison-card .highlight {
+      color: var(--text);
+    }
+
+    /* Features */
+    .features {
+      padding: 100px 0;
+      background: var(--bg-secondary);
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      margin-top: 60px;
+    }
+
+    .feature-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+    }
+
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      background: var(--bg-tertiary);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+    }
+
+    .feature-card h3 {
+      font-size: 1.2rem;
+      margin-bottom: 12px;
+    }
+
+    .feature-card p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+
+    /* Tools */
+    .tools {
+      padding: 100px 0;
+    }
+
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 60px;
+    }
+
+    .tool-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      text-align: center;
+    }
+
+    .tool-card h3 {
+      font-size: 1.3rem;
+      margin-bottom: 8px;
+    }
+
+    .tool-card .method {
+      color: var(--accent);
+      font-size: 0.9rem;
+      margin-bottom: 16px;
+    }
+
+    .tool-card .savings {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--green);
+    }
+
+    .tool-card .savings-label {
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+    }
+
+    /* Commands */
+    .commands {
+      padding: 100px 0;
+      background: var(--bg-secondary);
+    }
+
+    .commands-list {
+      max-width: 700px;
+      margin: 60px auto 0;
+    }
+
+    .command-item {
+      display: flex;
+      gap: 24px;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .command-item code {
+      font-family: 'JetBrains Mono', monospace;
+      background: var(--bg);
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      white-space: nowrap;
+      min-width: 180px;
+    }
+
+    .command-item span {
+      color: var(--text-secondary);
+    }
+
+    /* CTA */
+    .cta {
+      padding: 120px 0;
+      text-align: center;
+    }
+
+    .cta h2 {
+      font-size: 2.5rem;
+      margin-bottom: 16px;
+    }
+
+    .cta p {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      margin-bottom: 40px;
+    }
+
+    /* Footer */
+    footer {
+      padding: 40px 0;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    footer a {
+      color: var(--text-secondary);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      color: var(--text);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+
+      .comparison,
+      .features-grid,
+      .tools-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stats {
+        flex-direction: column;
+        gap: 32px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <nav>
+        <a href="/" class="logo">ai-rules</a>
+        <div class="nav-links">
+          <a href="https://github.com/JSK9999/ai-rules">GitHub</a>
+          <a href="https://github.com/JSK9999/ai-rules#readme">Docs</a>
+          <a href="https://www.npmjs.com/package/ai-rules">npm</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <div class="hero-badge">Open Source</div>
+        <h1>Stop wasting <span>tokens</span></h1>
+        <p>AI coding assistant rule manager for Claude Code, Cursor, and Codex. Load only the rules you need.</p>
+        <div class="hero-cta">
+          <a href="https://github.com/JSK9999/ai-rules" class="btn btn-primary">Get Started</a>
+          <a href="https://github.com/JSK9999/ai-rules#readme" class="btn btn-secondary">Documentation</a>
+        </div>
+        <div class="code-block">
+          <span class="prompt">$</span> <span class="command">npx ai-rules install</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="stats">
+      <div class="container" style="display: flex; justify-content: center; gap: 60px; flex-wrap: wrap;">
+        <div class="stat">
+          <div class="stat-value">84%</div>
+          <div class="stat-label">Token Savings</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">3</div>
+          <div class="stat-label">Supported Tools</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">1</div>
+          <div class="stat-label">Command to Install</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="problem-solution">
+      <div class="container">
+        <h2 class="section-title">The Problem & Solution</h2>
+        <div class="comparison">
+          <div class="comparison-card before">
+            <h3>Before</h3>
+            <pre>
+Loading rules... <span class="highlight">4,300 lines</span>
+Token cost: <span class="highlight">~5,000 tokens</span>
+
+Every request loads ALL rules.
+React rules for Git commits?
+Security rules for styling?
+
+<span class="highlight">Wasted tokens = Wasted money</span></pre>
+          </div>
+          <div class="comparison-card after">
+            <h3>After</h3>
+            <pre>
+You: "Write a commit message"
+
+Semantic Router activates:
+  <span class="highlight">commit.md</span> (needed)
+  <span class="highlight">essential.md</span> (always on)
+  react.md (skipped)
+  security.md (skipped)
+
+Token cost: <span class="highlight">~800 tokens</span></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="features">
+      <div class="container">
+        <h2 class="section-title">Features</h2>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">🧠</div>
+            <h3>Semantic Router</h3>
+            <p>AI analyzes your prompt and loads only relevant rules. GPT-4o-mini or Claude Haiku for just ~$0.50/month.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🔄</div>
+            <h3>Team Sync</h3>
+            <p>Share rules via Git repositories. Everyone stays in sync with a single update command.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🛡️</div>
+            <h3>Local Priority</h3>
+            <p>Your customizations are never overwritten. Only new files are added during updates.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">⚡</div>
+            <h3>Zero Config</h3>
+            <p>Works out of the box. Interactive setup guides you through the installation.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🔗</div>
+            <h3>Symlink Mode</h3>
+            <p>Rules link to source. Updates sync instantly without overwriting anything.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🩺</div>
+            <h3>Doctor Command</h3>
+            <p>Diagnose your installation. See what's working and what needs attention.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="tools">
+      <div class="container">
+        <h2 class="section-title">Supported Tools</h2>
+        <div class="tools-grid">
+          <div class="tool-card">
+            <h3>Claude Code</h3>
+            <div class="method">Semantic Router</div>
+            <div class="savings">~84%</div>
+            <div class="savings-label">token savings</div>
+          </div>
+          <div class="tool-card">
+            <h3>Cursor</h3>
+            <div class="method">Semantic Search (.mdc)</div>
+            <div class="savings">~70%</div>
+            <div class="savings-label">token savings</div>
+          </div>
+          <div class="tool-card">
+            <h3>Codex</h3>
+            <div class="method">Static AGENTS.md</div>
+            <div class="savings">-</div>
+            <div class="savings-label">no dynamic loading</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="commands">
+      <div class="container">
+        <h2 class="section-title">Commands</h2>
+        <div class="commands-list">
+          <div class="command-item">
+            <code>ai-rules install</code>
+            <span>Install rules globally (~/.claude/)</span>
+          </div>
+          <div class="command-item">
+            <code>ai-rules install -i</code>
+            <span>Interactive mode - choose tools & rules</span>
+          </div>
+          <div class="command-item">
+            <code>ai-rules init</code>
+            <span>Install in current project</span>
+          </div>
+          <div class="command-item">
+            <code>ai-rules update</code>
+            <span>Sync latest rules (respects local changes)</span>
+          </div>
+          <div class="command-item">
+            <code>ai-rules doctor</code>
+            <span>Diagnose installation issues</span>
+          </div>
+          <div class="command-item">
+            <code>ai-rules test &lt;prompt&gt;</code>
+            <span>Preview which rules would load</span>
+          </div>
+          <div class="command-item">
+            <code>ai-rules uninstall</code>
+            <span>Clean removal</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta">
+      <div class="container">
+        <h2>Ready to save tokens?</h2>
+        <p>Get started in seconds with a single command.</p>
+        <div class="code-block" style="margin: 0 auto;">
+          <span class="prompt">$</span> <span class="command">npx ai-rules install -i</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>
+        Apache 2.0 License ·
+        <a href="https://github.com/JSK9999/ai-rules">GitHub</a> ·
+        <a href="https://www.npmjs.com/package/ai-rules">npm</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>
