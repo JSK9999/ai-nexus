@@ -5,7 +5,7 @@
 AI coding assistant rule manager for **Claude Code**, **Cursor**, and **Codex**.
 
 [![npm version](https://img.shields.io/npm/v/ai-rules.svg)](https://www.npmjs.com/package/ai-rules)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 ```bash
 npx ai-rules install
@@ -305,4 +305,4 @@ Selected rules (3):
 
 ## License
 
-MIT
+Apache 2.0
