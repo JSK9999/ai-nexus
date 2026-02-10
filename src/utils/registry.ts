@@ -1,7 +1,7 @@
 import https from 'https';
 
 const REPO_OWNER = 'JSK9999';
-const REPO_NAME = 'ai-rules';
+const REPO_NAME = 'ai-nexus';
 const BRANCH = 'main';
 const CATEGORIES = ['rules', 'commands', 'skills', 'agents', 'contexts'];
 

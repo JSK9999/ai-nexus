@@ -313,7 +313,7 @@ npx ai-nexus get react.md
 npx ai-nexus get commit.md --category commands
 ```
 
-Rules are downloaded from the [latest GitHub repo](https://github.com/JSK9999/ai-rules/tree/main/config) to `~/.claude/`. Anyone can contribute new rules via PR — they become available to `search` and `get` immediately after merge.
+Rules are downloaded from the [latest GitHub repo](https://github.com/JSK9999/ai-nexus/tree/main/config) to `~/.claude/`. Anyone can contribute new rules via PR — they become available to `search` and `get` immediately after merge.
 
 ---
 
@@ -336,12 +336,12 @@ Selected rules (3):
 
 We welcome rule contributions! Contributed rules are instantly available via `ai-nexus search` and `ai-nexus get` — no npm publish needed.
 
-1. **Suggest a rule**: [Open a Rule Request](https://github.com/JSK9999/ai-rules/issues/new?template=rule-request.yml)
+1. **Suggest a rule**: [Open a Rule Request](https://github.com/JSK9999/ai-nexus/issues/new?template=rule-request.yml)
 2. **Submit a rule**: See [CONTRIBUTING.md](CONTRIBUTING.md) for the full guide
 
 ```bash
 # Quick start for contributors
-git clone https://github.com/JSK9999/ai-rules.git
+git clone https://github.com/JSK9999/ai-nexus.git
 cd ai-rules && npm install && npm run build
 
 # Add your rule to config/rules/, then test:

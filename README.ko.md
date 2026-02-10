@@ -313,7 +313,7 @@ npx ai-nexus get react.md
 npx ai-nexus get commit.md --category commands
 ```
 
-룰은 [최신 GitHub 저장소](https://github.com/JSK9999/ai-rules/tree/main/config)에서 `~/.claude/`로 다운로드됩니다. PR로 새 룰을 기여하면 merge 즉시 `search`와 `get`으로 사용 가능합니다.
+룰은 [최신 GitHub 저장소](https://github.com/JSK9999/ai-nexus/tree/main/config)에서 `~/.claude/`로 다운로드됩니다. PR로 새 룰을 기여하면 merge 즉시 `search`와 `get`으로 사용 가능합니다.
 
 ---
 
@@ -336,12 +336,12 @@ Selected rules (3):
 
 룰 기여를 환영합니다! 기여된 룰은 `ai-nexus search`와 `ai-nexus get`으로 즉시 사용 가능합니다 — npm publish 불필요.
 
-1. **룰 제안**: [Rule Request 열기](https://github.com/JSK9999/ai-rules/issues/new?template=rule-request.yml)
+1. **룰 제안**: [Rule Request 열기](https://github.com/JSK9999/ai-nexus/issues/new?template=rule-request.yml)
 2. **룰 제출**: [CONTRIBUTING.md](CONTRIBUTING.md) 전체 가이드 참고
 
 ```bash
 # 기여자 빠른 시작
-git clone https://github.com/JSK9999/ai-rules.git
+git clone https://github.com/JSK9999/ai-nexus.git
 cd ai-rules && npm install && npm run build
 
 # config/rules/에 룰 추가 후 테스트:

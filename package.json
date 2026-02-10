@@ -26,16 +26,16 @@
   ],
   "author": "JSK9999",
   "license": "Apache-2.0",
-  "homepage": "https://github.com/JSK9999/ai-rules#readme",
+  "homepage": "https://github.com/JSK9999/ai-nexus#readme",
   "bugs": {
-    "url": "https://github.com/JSK9999/ai-rules/issues"
+    "url": "https://github.com/JSK9999/ai-nexus/issues"
   },
   "publishConfig": {
     "access": "public"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/JSK9999/ai-rules.git"
+    "url": "https://github.com/JSK9999/ai-nexus.git"
   },
   "files": [
     "bin/",

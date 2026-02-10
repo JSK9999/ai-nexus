@@ -79,14 +79,14 @@ PRs are reviewed based on:
 
 ## Bug Reports & Feature Requests
 
-- **Bug**: Use the [Bug Report](https://github.com/JSK9999/ai-rules/issues/new?template=bug-report.yml) template
-- **Rule idea**: Use the [Rule Request](https://github.com/JSK9999/ai-rules/issues/new?template=rule-request.yml) template
+- **Bug**: Use the [Bug Report](https://github.com/JSK9999/ai-nexus/issues/new?template=bug-report.yml) template
+- **Rule idea**: Use the [Rule Request](https://github.com/JSK9999/ai-nexus/issues/new?template=rule-request.yml) template
 - **Feature**: Open a regular issue with context
 
 ## Development Setup
 
 ```bash
-git clone https://github.com/JSK9999/ai-rules.git
+git clone https://github.com/JSK9999/ai-nexus.git
 cd ai-rules
 npm install
 npm run build
