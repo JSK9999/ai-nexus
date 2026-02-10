@@ -8,6 +8,7 @@ interface CheckResult {
   name: string;
   status: 'ok' | 'warn' | 'error';
   message: string;
+  fix?: string;
 }
 
 export async function doctor(): Promise<void> {
@@ -53,7 +54,8 @@ export async function doctor(): Promise<void> {
     results.push({
       name: 'Installation',
       status: 'error',
-      message: 'No installation found. Run "ai-nexus install" first.',
+      message: 'No installation found.',
+      fix: 'Run: ai-nexus install (global) or ai-nexus init (project)',
     });
   }
 
@@ -91,6 +93,7 @@ export async function doctor(): Promise<void> {
           name: dir.label,
           status: 'warn',
           message: `Missing: ${missing.join(', ')}`,
+          fix: 'Run: ai-nexus install --copy',
         });
       }
     }
@@ -111,6 +114,7 @@ export async function doctor(): Promise<void> {
       name: 'Semantic Router',
       status: 'warn',
       message: 'Hook not found. Dynamic rule loading disabled.',
+      fix: 'Run: ai-nexus install (hooks are installed automatically)',
     });
   }
 
@@ -144,6 +148,7 @@ export async function doctor(): Promise<void> {
       name: 'Hook Config',
       status: 'warn',
       message: 'No UserPromptSubmit hook in settings.json',
+      fix: 'Run: ai-nexus install (settings.json is created automatically)',
     });
   }
 
@@ -163,6 +168,7 @@ export async function doctor(): Promise<void> {
       name: 'AI Routing',
       status: 'warn',
       message: 'No API key. Using keyword fallback.',
+      fix: 'Add to your shell profile (~/.zshrc):\n  export ANTHROPIC_API_KEY=sk-ant-...\n  or export OPENAI_API_KEY=sk-...',
     });
   }
 
@@ -208,6 +214,9 @@ export async function doctor(): Promise<void> {
 
     console.log(`${icon} ${chalk.bold(result.name)}`);
     console.log(`  ${statusColor(result.message)}`);
+    if (result.fix && result.status !== 'ok') {
+      console.log(`  ${chalk.gray('Fix:')} ${result.fix}`);
+    }
     console.log('');
   }
 

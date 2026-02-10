@@ -1,6 +1,8 @@
 import fs from 'fs';
 import path from 'path';
+import chalk from 'chalk';
 import { detectInstall } from '../utils/files.js';
+import { scanConfigDir } from '../utils/config-scanner.js';
 
 interface DotrulesMeta {
   version: string;
@@ -18,67 +20,58 @@ export async function list(): Promise<void> {
   const install = detectInstall();
 
   if (!install) {
-    console.log('\n📋 ai-nexus - No installation found\n');
-    console.log('Run "ai-nexus init" or "ai-nexus install" to get started.\n');
+    console.log('\n  ai-nexus - No installation found\n');
+    console.log('  Run "ai-nexus install" or "ai-nexus init" to get started.\n');
     return;
   }
 
   const { configPath, scope } = install;
   const configDir = path.join(configPath, 'config');
 
-  console.log('\n📋 ai-nexus - Installed Rules\n');
-  console.log('='.repeat(50));
+  console.log(chalk.bold('\n  ai-nexus - Installed Rules\n'));
+  console.log(chalk.gray('  ' + '-'.repeat(48)));
 
   // Read metadata
   const metaPath = path.join(configPath, 'meta.json');
   if (fs.existsSync(metaPath)) {
     const meta: DotrulesMeta = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
-    console.log(`\nScope: ${scope}`);
-    console.log(`Mode: ${meta.mode}`);
-    console.log(`Sources:`);
-    for (const source of meta.sources) {
-      if (source.type === 'external') {
-        console.log(`  - ${source.name} (${source.url})`);
-      } else {
-        console.log(`  - ${source.name}`);
-      }
-    }
+    console.log(`  Scope:   ${scope}`);
+    console.log(`  Mode:    ${meta.mode}`);
+    console.log(`  Sources: ${meta.sources.map(s => s.type === 'external' ? `${s.name} (${s.url})` : s.name).join(', ')}`);
   }
 
-  // List files by category
-  const categories = ['rules', 'commands', 'skills', 'agents', 'contexts'];
+  // List files by category with descriptions
+  const categories = scanConfigDir(configDir);
+  let totalFiles = 0;
 
   for (const category of categories) {
-    const catDir = path.join(configDir, category);
-    if (!fs.existsSync(catDir)) continue;
+    console.log(chalk.bold(`\n  ${category.name}/`));
 
-    const files = listFilesRecursive(catDir);
-    if (files.length === 0) continue;
-
-    console.log(`\n${category}/`);
-    for (const file of files) {
-      const filePath = path.join(catDir, file);
-      const lines = fs.readFileSync(filePath, 'utf8').split('\n').length;
-      console.log(`  └─ ${file} (${lines} lines)`);
+    for (const file of category.files) {
+      totalFiles++;
+      const desc = file.description
+        ? chalk.gray(` - ${truncate(file.description, 50)}`)
+        : '';
+      console.log(`    ${file.file}${desc}`);
     }
   }
 
-  console.log('\n' + '='.repeat(50));
-  console.log('💡 Run "ai-nexus update" to sync latest rules\n');
+  // Summary
+  console.log(chalk.gray('\n  ' + '-'.repeat(48)));
+  console.log(`  ${totalFiles} files across ${categories.length} categories`);
+
+  // Semantic router status
+  const hasOpenAI = !!process.env.OPENAI_API_KEY;
+  const hasAnthropic = !!process.env.ANTHROPIC_API_KEY;
+  if (hasOpenAI || hasAnthropic) {
+    console.log(chalk.green(`  Semantic Router: AI routing (${hasOpenAI ? 'OpenAI' : 'Anthropic'})`));
+  } else {
+    console.log(chalk.yellow('  Semantic Router: keyword fallback (no API key)'));
+  }
+
+  console.log(chalk.gray('\n  Tip: ai-nexus test <prompt>  to preview rule selection\n'));
 }
 
-function listFilesRecursive(dir: string, base = ''): string[] {
-  const result: string[] = [];
-  const entries = fs.readdirSync(dir, { withFileTypes: true });
-
-  for (const entry of entries) {
-    const relPath = base ? path.join(base, entry.name) : entry.name;
-    if (entry.isDirectory()) {
-      result.push(...listFilesRecursive(path.join(dir, entry.name), relPath));
-    } else if (entry.name.endsWith('.md')) {
-      result.push(relPath);
-    }
-  }
-
-  return result;
+function truncate(str: string, max: number): string {
+  return str.length > max ? str.slice(0, max) + '...' : str;
 }
