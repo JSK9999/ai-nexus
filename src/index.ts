@@ -10,3 +10,5 @@ export { list } from './commands/list.js';
 export { add } from './commands/add.js';
 export { remove } from './commands/remove.js';
 export { test, testKeywords } from './commands/test.js';
+export { search, searchAll } from './commands/search.js';
+export { get } from './commands/get.js';

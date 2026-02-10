@@ -99,6 +99,28 @@ program
   });
 
 program
+  .command('search [keyword]')
+  .description('Search community rules from the registry')
+  .action(async (keyword) => {
+    if (keyword) {
+      const { search } = await import('../dist/commands/search.js');
+      await search(keyword);
+    } else {
+      const { searchAll } = await import('../dist/commands/search.js');
+      await searchAll();
+    }
+  });
+
+program
+  .command('get <filename>')
+  .description('Download a rule from the community registry')
+  .option('-c, --category <category>', 'Specify category (rules, commands, skills, agents)')
+  .action(async (filename, options) => {
+    const { get } = await import('../dist/commands/get.js');
+    await get(filename, options);
+  });
+
+program
   .command('uninstall')
   .description('Remove ai-nexus installation')
   .option('-f, --force', 'Skip confirmation prompt')
