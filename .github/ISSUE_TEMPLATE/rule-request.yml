@@ -1,0 +1,62 @@
+name: Rule Request
+description: Suggest a new rule for ai-nexus
+title: "[Rule] "
+labels: ["rule-request", "good first issue"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a rule! Community rules are what make ai-nexus valuable.
+
+  - type: input
+    id: rule-name
+    attributes:
+      label: Rule Name
+      description: What would you call this rule?
+      placeholder: e.g., python-fastapi, rust-error-handling, git-workflow
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      options:
+        - rules (core coding rules)
+        - commands (slash commands)
+        - skills (domain knowledge)
+        - agents (sub-agent definitions)
+        - contexts (context files)
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What should this rule do?
+      description: Describe the instructions the AI should follow when this rule is active.
+      placeholder: |
+        When working with FastAPI:
+        - Use Pydantic models for request/response validation
+        - Use dependency injection for shared logic
+        - ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: trigger
+    attributes:
+      label: When should it activate?
+      description: What kind of prompts should trigger this rule?
+      placeholder: |
+        e.g., "write a FastAPI endpoint", "create an API route", "add validation"
+
+  - type: dropdown
+    id: willing-to-pr
+    attributes:
+      label: Would you like to submit this as a PR?
+      options:
+        - "Yes, I can write it"
+        - "No, someone else can pick it up"
+    validations:
+      required: true

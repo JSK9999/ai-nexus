@@ -294,12 +294,18 @@ Selected rules (3):
 
 ## Contributing
 
-1. Fork & clone
-2. `npm install`
-3. Edit rules in `config/`
-4. `npm run build`
-5. Test: `node bin/ai-nexus.cjs list`
-6. PR!
+We welcome rule contributions! The easiest way to contribute:
+
+1. **Suggest a rule**: [Open a Rule Request](https://github.com/JSK9999/ai-rules/issues/new?template=rule-request.yml)
+2. **Submit a rule**: See [CONTRIBUTING.md](CONTRIBUTING.md) for the full guide
+
+```bash
+# Quick start for contributors
+git clone https://github.com/JSK9999/ai-rules.git
+cd ai-rules && npm install && npm run build
+# Add your rule to config/rules/, then test:
+node bin/ai-rules.cjs test "your prompt"
+```
 
 ---
 
