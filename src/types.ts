@@ -11,6 +11,7 @@ export interface DotrulesMeta {
   tools?: string[];
   template?: string | null;
   selectedFiles?: Record<string, string[]>;
+  fileHashes?: Record<string, string>;
   createdAt: string;
   updatedAt: string;
 }

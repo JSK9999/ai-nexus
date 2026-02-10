@@ -152,6 +152,30 @@ export async function doctor(): Promise<void> {
     });
   }
 
+  // Check 4b: Hook timeout
+  for (const settingsPath of [globalSettings, projectSettings]) {
+    if (fs.existsSync(settingsPath)) {
+      try {
+        const settings = JSON.parse(fs.readFileSync(settingsPath, 'utf8'));
+        const hooks = settings.hooks?.UserPromptSubmit;
+        if (Array.isArray(hooks)) {
+          for (const hook of hooks) {
+            if (typeof hook.timeout === 'number' && hook.timeout < 120) {
+              results.push({
+                name: 'Hook Timeout',
+                status: 'warn',
+                message: `Hook timeout is ${hook.timeout}s (recommended: 120s+)`,
+                fix: `Edit ${settingsPath} and set "timeout": 120`,
+              });
+            }
+          }
+        }
+      } catch {
+        // ignore
+      }
+    }
+  }
+
   // Check 5: API Keys for semantic routing
   const hasOpenAI = !!process.env.OPENAI_API_KEY;
   const hasAnthropic = !!process.env.ANTHROPIC_API_KEY;

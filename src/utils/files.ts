@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import os from 'os';
+import crypto from 'crypto';
 
 export interface ScanResult {
   [relativePath: string]: Buffer;
@@ -54,6 +55,25 @@ export function compareConfigs(source: ScanResult, installed: ScanResult): DiffR
   }
 
   return { added, modified, removed, unchanged };
+}
+
+export function computeFileHashes(dir: string, base = ''): Record<string, string> {
+  const hashes: Record<string, string> = {};
+  if (!fs.existsSync(dir)) return hashes;
+
+  const entries = fs.readdirSync(dir, { withFileTypes: true });
+  for (const entry of entries) {
+    const fullPath = path.join(dir, entry.name);
+    const relPath = base ? path.join(base, entry.name) : entry.name;
+
+    if (entry.isDirectory()) {
+      Object.assign(hashes, computeFileHashes(fullPath, relPath));
+    } else {
+      const content = fs.readFileSync(fullPath);
+      hashes[relPath] = crypto.createHash('md5').update(content).digest('hex');
+    }
+  }
+  return hashes;
 }
 
 export function getTargetDir(scope: 'project' | 'global'): string {

@@ -11,6 +11,7 @@ import {
   ensureDir,
   createSymlink,
   scanDir,
+  computeFileHashes,
 } from '../utils/files.js';
 import { scanConfigDir, type ConfigFile } from '../utils/config-scanner.js';
 import type { DotrulesMeta } from '../types.js';
@@ -442,7 +443,8 @@ async function install(selections: Selections): Promise<void> {
     }
   }
 
-  // Save metadata
+  // Save metadata (compute file hashes for copy mode conflict detection)
+  const claudeDir = path.join(targetDir, '.claude');
   const meta: DotrulesMeta = {
     version: require(path.join(PACKAGE_ROOT, 'package.json')).version,
     mode: method,
@@ -450,6 +452,7 @@ async function install(selections: Selections): Promise<void> {
     template,
     sources: [{ name: 'builtin', type: 'builtin' }],
     selectedFiles,
+    ...(method === 'copy' ? { fileHashes: computeFileHashes(claudeDir) } : {}),
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   };

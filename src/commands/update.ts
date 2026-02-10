@@ -3,7 +3,8 @@ import path from 'path';
 import os from 'os';
 import chalk from 'chalk';
 import inquirer from 'inquirer';
-import { detectInstall, scanDir, compareConfigs, ensureDir } from '../utils/files.js';
+import { detectInstall, scanDir, compareConfigs, ensureDir, computeFileHashes } from '../utils/files.js';
+import crypto from 'crypto';
 import { updateRepo } from '../utils/git.js';
 import type { DotrulesMeta } from '../types.js';
 
@@ -97,8 +98,30 @@ export async function update(options: UpdateOptions = {}): Promise<void> {
     let filesToRemove: string[] = [];
 
     if (options.force) {
-      // Force mode: update everything
-      filesToUpdate = diff.modified;
+      // Force mode: update everything, but warn about user-edited files
+      const userEdited = detectUserEdits(diff.modified, claudeDir, meta.fileHashes);
+      if (userEdited.length > 0) {
+        console.log(chalk.red(`\n   WARNING: ${userEdited.length} file(s) have local edits that will be overwritten:`));
+        for (const f of userEdited) {
+          console.log(chalk.red(`     - ${f}`));
+        }
+
+        const { proceed } = await inquirer.prompt<{ proceed: boolean }>([
+          {
+            type: 'confirm',
+            name: 'proceed',
+            message: 'Overwrite these user-edited files?',
+            default: false,
+          },
+        ]);
+        if (!proceed) {
+          filesToUpdate = diff.modified.filter(f => !userEdited.includes(f));
+        } else {
+          filesToUpdate = diff.modified;
+        }
+      } else {
+        filesToUpdate = diff.modified;
+      }
       filesToRemove = diff.removed;
     } else if (options.addOnly) {
       // Add-only mode: only add new files
@@ -182,8 +205,11 @@ export async function update(options: UpdateOptions = {}): Promise<void> {
     }
   }
 
-  // Update metadata
+  // Update metadata (refresh file hashes for copy mode)
   meta.updatedAt = new Date().toISOString();
+  if (meta.mode === 'copy') {
+    meta.fileHashes = computeFileHashes(claudeDir);
+  }
   fs.writeFileSync(metaPath, JSON.stringify(meta, null, 2));
 
   if (hasChanges) {
@@ -191,4 +217,29 @@ export async function update(options: UpdateOptions = {}): Promise<void> {
   } else {
     console.log('\n✅ Already up to date!\n');
   }
+}
+
+function detectUserEdits(
+  modifiedFiles: string[],
+  claudeDir: string,
+  savedHashes?: Record<string, string>,
+): string[] {
+  if (!savedHashes) return [];
+
+  const userEdited: string[] = [];
+  for (const rel of modifiedFiles) {
+    const filePath = path.join(claudeDir, rel);
+    if (!fs.existsSync(filePath)) continue;
+
+    const currentHash = crypto
+      .createHash('md5')
+      .update(fs.readFileSync(filePath))
+      .digest('hex');
+
+    const originalHash = savedHashes[rel];
+    if (originalHash && currentHash !== originalHash) {
+      userEdited.push(rel);
+    }
+  }
+  return userEdited;
 }

@@ -10,6 +10,7 @@ import {
   copyFile,
   createSymlink,
   scanDir,
+  computeFileHashes,
 } from '../utils/files.js';
 import { cloneRepo, getRepoName, normalizeGitUrl } from '../utils/git.js';
 import type { DotrulesMeta } from '../types.js';
@@ -165,6 +166,7 @@ export async function init(options: InitOptions): Promise<void> {
     version: require(path.join(PACKAGE_ROOT, 'package.json')).version,
     mode,
     sources,
+    ...(mode === 'copy' ? { fileHashes: computeFileHashes(claudeDir) } : {}),
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   };
