@@ -131,6 +131,7 @@ Cursor의 내장 시맨틱 서치가 관련도에 따라 룰을 로드합니다.
 | `get <filename>` | 커뮤니티 레지스트리에서 룰 다운로드 |
 | `add <url>` | Git 저장소에서 룰 추가 |
 | `remove <name>` | 룰 소스 제거 |
+| `browse` | 브라우저에서 룰 마켓플레이스 열기 |
 | `doctor` | 설치 상태 진단 |
 | `uninstall` | ai-nexus 제거 |
 
@@ -280,6 +281,23 @@ npx ai-nexus add github.com/acme/security-rules
 # 전체 업데이트
 npx ai-nexus update
 ```
+
+---
+
+## 룰 마켓플레이스
+
+![browse](docs/browse.png)
+
+웹 기반 마켓플레이스에서 룰을 검색, 설치, 제거할 수 있습니다:
+
+```bash
+npx ai-nexus browse
+```
+
+- 커뮤니티 룰 실시간 검색 및 카테고리 필터
+- 브라우저에서 직접 설치/제거
+- 도구 상태 (Claude Code, Cursor, Codex) 및 진단 확인
+- `http://localhost:3847`에서 로컬 실행
 
 ---
 

@@ -131,6 +131,7 @@ A single `AGENTS.md` file is loaded at session start. No dynamic loading.
 | `get <filename>` | Download a rule from the community registry |
 | `add <url>` | Add rules from a Git repository |
 | `remove <name>` | Remove a rule source |
+| `browse` | Open rule marketplace in browser |
 | `doctor` | Diagnose installation issues |
 | `uninstall` | Remove ai-nexus installation |
 
@@ -280,6 +281,23 @@ npx ai-nexus add github.com/acme/security-rules
 # Update all at once
 npx ai-nexus update
 ```
+
+---
+
+## Rule Marketplace
+
+![browse](docs/browse.png)
+
+Open the web-based marketplace to search, install, and remove rules with one click:
+
+```bash
+npx ai-nexus browse
+```
+
+- Browse community rules with real-time search and category filters
+- Install/remove rules directly from the browser
+- View tool status (Claude Code, Cursor, Codex) and diagnostics
+- Runs locally on `http://localhost:3847`
 
 ---
 
