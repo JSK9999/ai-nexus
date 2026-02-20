@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+  <defs>
+    <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00e5ff"/>
+      <stop offset="100%" stop-color="#a855f7"/>
+    </linearGradient>
+    <linearGradient id="g2" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00e5ff"/>
+      <stop offset="100%" stop-color="#a855f7"/>
+    </linearGradient>
+  </defs>
+  <!-- Background -->
+  <rect width="120" height="120" rx="28" fill="#0a0a0f"/>
+  <!-- Edges -->
+  <line x1="60" y1="30" x2="30" y2="80" stroke="url(#g1)" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
+  <line x1="60" y1="30" x2="90" y2="80" stroke="url(#g1)" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
+  <line x1="30" y1="80" x2="90" y2="80" stroke="url(#g2)" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
+  <!-- Nodes -->
+  <circle cx="60" cy="30" r="10" fill="url(#g1)"/>
+  <circle cx="30" cy="80" r="10" fill="url(#g1)"/>
+  <circle cx="90" cy="80" r="10" fill="url(#g2)"/>
+  <!-- Center glow -->
+  <circle cx="60" cy="63" r="5" fill="url(#g1)" opacity="0.4"/>
+</svg>
