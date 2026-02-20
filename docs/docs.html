@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ai-nexus - Documentation</title>
+  <meta name="description" content="ai-nexus documentation - installation, commands, configuration, and usage guide.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #09090b;
+      --bg2: #111113;
+      --bg3: #1a1a1f;
+      --text: #fafafa;
+      --text2: #a1a1aa;
+      --text3: #71717a;
+      --accent: #3b82f6;
+      --accent2: #60a5fa;
+      --purple: #a855f7;
+      --green: #22c55e;
+      --yellow: #eab308;
+      --red: #ef4444;
+      --border: #1e1e23;
+      --border2: #2e2e36;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+
+    /* Header */
+    header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 20px 0; background: rgba(9,9,11,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+    nav { max-width: 1100px; margin: 0 auto; padding: 0 32px; display: flex; justify-content: space-between; align-items: center; }
+    .logo { font-size: 1.25rem; font-weight: 700; color: var(--text); text-decoration: none; letter-spacing: -0.02em; }
+    .nav-links { display: flex; gap: 36px; }
+    .nav-links a { color: var(--text3); text-decoration: none; font-size: 0.875rem; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--text); }
+
+    /* Layout */
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 100px 32px 80px; display: flex; gap: 48px; }
+    .sidebar { width: 220px; flex-shrink: 0; position: sticky; top: 100px; height: fit-content; }
+    .sidebar a { display: block; padding: 6px 14px; font-size: 0.82rem; color: var(--text3); text-decoration: none; border-left: 2px solid transparent; transition: all 0.2s; margin-bottom: 2px; border-radius: 0 6px 6px 0; }
+    .sidebar a:hover { color: var(--text2); background: rgba(255,255,255,0.02); }
+    .sidebar a.active { color: var(--accent); border-left-color: var(--accent); background: rgba(59,130,246,0.05); }
+    .sidebar .group { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text3); padding: 16px 14px 6px; }
+    .content { flex: 1; min-width: 0; }
+
+    /* Typography */
+    h1 { font-size: 2.2rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
+    h1 .gradient { background: linear-gradient(135deg, var(--accent), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .subtitle { color: var(--text3); font-size: 1.05rem; margin-bottom: 48px; }
+    h2 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.01em; margin: 56px 0 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+    h2:first-of-type { margin-top: 0; }
+    h3 { font-size: 1.1rem; font-weight: 600; margin: 32px 0 12px; }
+    p { color: var(--text2); margin-bottom: 16px; font-size: 0.92rem; }
+    ul, ol { color: var(--text2); margin: 0 0 16px 20px; font-size: 0.92rem; }
+    li { margin-bottom: 6px; }
+    strong { color: var(--text); font-weight: 600; }
+
+    /* Code */
+    code { font-family: 'JetBrains Mono', monospace; background: var(--bg2); border: 1px solid var(--border); padding: 2px 7px; border-radius: 5px; font-size: 0.82rem; color: var(--accent2); }
+    pre { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 20px 24px; margin: 0 0 20px; overflow-x: auto; line-height: 1.7; }
+    pre code { background: none; border: none; padding: 0; font-size: 0.82rem; color: var(--text2); }
+    .hl { color: var(--green); }
+    .cm { color: var(--text3); }
+    .kw { color: var(--accent2); }
+
+    /* Table */
+    table { width: 100%; border-collapse: collapse; margin: 0 0 24px; font-size: 0.88rem; }
+    th { text-align: left; padding: 10px 14px; border-bottom: 2px solid var(--border); color: var(--text3); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; }
+    td { padding: 10px 14px; border-bottom: 1px solid var(--border); color: var(--text2); }
+    td code { font-size: 0.8rem; }
+
+    /* Callout */
+    .callout { background: rgba(59,130,246,0.06); border: 1px solid rgba(59,130,246,0.15); border-radius: 10px; padding: 16px 20px; margin: 0 0 20px; font-size: 0.88rem; color: var(--text2); }
+    .callout.warn { background: rgba(234,179,8,0.06); border-color: rgba(234,179,8,0.15); }
+    .callout strong { color: var(--accent); }
+    .callout.warn strong { color: var(--yellow); }
+
+    /* Directory tree */
+    .tree { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 20px 24px; margin: 0 0 20px; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--text3); line-height: 1.8; }
+    .tree .dir { color: var(--accent2); }
+    .tree .file { color: var(--text2); }
+    .tree .link { color: var(--purple); }
+
+    /* Footer */
+    footer { padding: 48px 32px; border-top: 1px solid var(--border); text-align: center; color: var(--text3); font-size: 0.85rem; }
+    footer a { color: var(--text3); text-decoration: none; transition: color 0.2s; }
+    footer a:hover { color: var(--text); }
+
+    @media (max-width: 768px) {
+      .wrap { flex-direction: column; padding-top: 80px; }
+      .sidebar { position: static; width: 100%; display: flex; flex-wrap: wrap; gap: 4px; }
+      .sidebar .group { width: 100%; padding: 8px 0 4px; }
+      .sidebar a { border-left: none; border-bottom: 2px solid transparent; border-radius: 6px; }
+      .sidebar a.active { border-bottom-color: var(--accent); border-left: none; }
+      h1 { font-size: 1.6rem; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="./" class="logo">ai-nexus</a>
+      <div class="nav-links">
+        <a href="./">Home</a>
+        <a href="docs.html" class="active">Docs</a>
+        <a href="https://github.com/JSK9999/ai-nexus">GitHub</a>
+        <a href="https://www.npmjs.com/package/ai-nexus">npm</a>
+      </div>
+    </nav>
+  </header>
+
+  <div class="wrap">
+    <aside class="sidebar">
+      <div class="group">Getting Started</div>
+      <a href="#installation" class="active">Installation</a>
+      <a href="#quick-start">Quick Start</a>
+      <a href="#supported-tools">Supported Tools</a>
+      <div class="group">Usage</div>
+      <a href="#commands">Commands</a>
+      <a href="#browse">Browse Marketplace</a>
+      <a href="#testing">Testing Rules</a>
+      <div class="group">Configuration</div>
+      <a href="#how-it-works">How It Works</a>
+      <a href="#directory-structure">Directory Structure</a>
+      <a href="#install-modes">Install Modes</a>
+      <a href="#rule-format">Rule Format</a>
+      <div class="group">Advanced</div>
+      <a href="#team-rules">Team Rules</a>
+      <a href="#multi-source">Multi-Source</a>
+      <a href="#community">Community Registry</a>
+    </aside>
+
+    <main class="content">
+      <h1><span class="gradient">ai-nexus</span> Documentation</h1>
+      <p class="subtitle">AI coding assistant rule manager for Claude Code, Cursor, and Codex.</p>
+
+      <!-- Installation -->
+      <h2 id="installation">Installation</h2>
+      <p>Install ai-nexus globally with a single command:</p>
+      <pre><code><span class="cm">$</span> <span class="hl">npx ai-nexus install</span></code></pre>
+      <p>Or use interactive mode for full control over what gets installed:</p>
+      <pre><code><span class="cm">$</span> <span class="hl">npx ai-nexus install -i</span></code></pre>
+      <div class="callout">
+        <strong>Requirements:</strong> Node.js 18 or higher.
+      </div>
+
+      <!-- Quick Start -->
+      <h2 id="quick-start">Quick Start</h2>
+      <pre><code><span class="cm"># Interactive setup (recommended)</span>
+<span class="hl">npx ai-nexus install -i</span>
+
+<span class="cm"># Quick install with defaults</span>
+<span class="hl">npx ai-nexus install</span>
+
+<span class="cm"># Use your team's rules</span>
+<span class="hl">npx ai-nexus install --rules github.com/your-org/team-rules</span>
+
+<span class="cm"># Install in current project only</span>
+<span class="hl">npx ai-nexus init</span></code></pre>
+
+      <!-- Supported Tools -->
+      <h2 id="supported-tools">Supported Tools</h2>
+      <table>
+        <thead><tr><th>Tool</th><th>Method</th><th>Token Savings</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Claude Code</strong></td><td>Semantic Router dynamically swaps rules per prompt</td><td>~84%</td></tr>
+          <tr><td><strong>Cursor</strong></td><td>Semantic Search via <code>.mdc</code> description fields</td><td>~70%</td></tr>
+          <tr><td><strong>Codex</strong></td><td>Static <code>AGENTS.md</code> (no dynamic loading)</td><td>-</td></tr>
+        </tbody>
+      </table>
+
+      <!-- Commands -->
+      <h2 id="commands">Commands</h2>
+      <table>
+        <thead><tr><th>Command</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>install</code></td><td>Install rules globally (<code>~/.claude/</code>)</td></tr>
+          <tr><td><code>install -i</code></td><td>Interactive mode &mdash; choose tools, rules, template</td></tr>
+          <tr><td><code>init</code></td><td>Install in current project (<code>.claude/</code>)</td></tr>
+          <tr><td><code>update</code></td><td>Sync latest rules (respects local changes)</td></tr>
+          <tr><td><code>list</code></td><td>Show installed rules</td></tr>
+          <tr><td><code>browse</code></td><td>Open rule marketplace in browser</td></tr>
+          <tr><td><code>test &lt;prompt&gt;</code></td><td>Preview which rules would load</td></tr>
+          <tr><td><code>search [keyword]</code></td><td>Search community rules from the registry</td></tr>
+          <tr><td><code>get &lt;filename&gt;</code></td><td>Download a rule from the community registry</td></tr>
+          <tr><td><code>add &lt;url&gt;</code></td><td>Add rules from a Git repository</td></tr>
+          <tr><td><code>remove &lt;name&gt;</code></td><td>Remove a rule source</td></tr>
+          <tr><td><code>doctor</code></td><td>Diagnose installation issues</td></tr>
+          <tr><td><code>uninstall</code></td><td>Remove ai-nexus installation</td></tr>
+        </tbody>
+      </table>
+
+      <!-- Browse Marketplace -->
+      <h2 id="browse">Browse Marketplace</h2>
+      <p>Open a web-based marketplace to search, install, and remove rules with one click:</p>
+      <pre><code><span class="cm">$</span> <span class="hl">npx ai-nexus browse</span>        <span class="cm"># default port 3847</span>
+<span class="cm">$</span> <span class="hl">npx ai-nexus browse 8080</span>   <span class="cm"># custom port</span></code></pre>
+      <p>The marketplace runs locally on <code>http://localhost:3847</code> and provides:</p>
+      <ul>
+        <li><strong>Community tab</strong> &mdash; browse and search all community rules with category filters</li>
+        <li><strong>My Rules tab</strong> &mdash; view installed rules and remove with one click</li>
+        <li><strong>Diagnostics tab</strong> &mdash; system health checks and rule source info</li>
+        <li><strong>Tool status cards</strong> &mdash; Claude Code, Cursor, Codex at a glance</li>
+      </ul>
+      <div style="margin:20px 0;border-radius:12px;overflow:hidden;border:1px solid var(--border)">
+        <img src="browse.png" alt="ai-nexus browse marketplace" style="width:100%;display:block">
+      </div>
+      <div class="callout">
+        <strong>Local only:</strong> The server runs on localhost. No data is sent externally. Install/remove only affects your local files.
+      </div>
+
+      <!-- Testing -->
+      <h2 id="testing">Testing Rules</h2>
+      <p>Preview which rules would load for a given prompt:</p>
+      <pre><code><span class="cm">$</span> <span class="hl">npx ai-nexus test "write a react component with hooks"</span>
+
+Selected rules (3):
+  <span class="hl">rules/essential.md</span>
+  <span class="hl">skills/react.md</span>
+
+<span class="cm">$</span> <span class="hl">npx ai-nexus test --list</span>    <span class="cm"># show all registered keywords</span></code></pre>
+
+      <!-- How It Works -->
+      <h2 id="how-it-works">How It Works</h2>
+
+      <h3>Claude Code: Semantic Router</h3>
+      <p>A hook runs on every prompt, analyzing what rules you actually need:</p>
+      <ul>
+        <li><strong>With AI routing</strong> (recommended) &mdash; GPT-4o-mini or Claude Haiku analyzes your prompt and picks the right rules. Cost: ~$0.50/month.</li>
+        <li><strong>Without AI</strong> (fallback) &mdash; keyword matching activates rules based on words in your prompt.</li>
+      </ul>
+      <pre><code><span class="cm"># Enable AI routing</span>
+<span class="kw">export</span> OPENAI_API_KEY=sk-xxx        <span class="cm"># or ANTHROPIC_API_KEY</span>
+<span class="kw">export</span> SEMANTIC_ROUTER_ENABLED=true</code></pre>
+
+      <h3>Cursor: Semantic Search</h3>
+      <p>Rules are converted to <code>.mdc</code> format with description metadata. Cursor's built-in semantic search loads rules based on relevance.</p>
+
+      <h3>Codex: Static Rules</h3>
+      <p>A single <code>AGENTS.md</code> file is loaded at session start. No dynamic loading.</p>
+
+      <!-- Directory Structure -->
+      <h2 id="directory-structure">Directory Structure</h2>
+      <div class="tree">
+<span class="dir">.ai-nexus/</span>                    <span class="cm"># ai-nexus metadata</span>
+├── <span class="dir">config/</span>                   <span class="cm"># Merged rules from all sources</span>
+├── <span class="dir">sources/</span>                  <span class="cm"># Cloned Git repositories</span>
+└── <span class="file">meta.json</span>                 <span class="cm"># Installation info</span>
+
+<span class="dir">.claude/</span>                       <span class="cm"># Claude Code</span>
+├── <span class="dir">hooks/</span><span class="file">semantic-router.cjs</span>
+├── <span class="file">settings.json</span>
+├── <span class="dir">rules/</span>          <span class="link">→ .ai-nexus/config/rules</span>
+├── <span class="dir">commands/</span>       <span class="link">→ .ai-nexus/config/commands</span>
+├── <span class="dir">skills/</span>         <span class="link">→ .ai-nexus/config/skills</span>
+├── <span class="dir">agents/</span>         <span class="link">→ .ai-nexus/config/agents</span>
+└── <span class="dir">contexts/</span>       <span class="link">→ .ai-nexus/config/contexts</span>
+
+<span class="dir">.cursor/rules/</span>                 <span class="cm"># Cursor (.mdc files)</span>
+├── <span class="file">essential.mdc</span>
+└── <span class="file">commit.mdc</span>
+
+<span class="dir">.codex/</span><span class="file">AGENTS.md</span>               <span class="cm"># Codex</span>
+      </div>
+
+      <!-- Install Modes -->
+      <h2 id="install-modes">Install Modes</h2>
+
+      <h3>Symlink (default)</h3>
+      <pre><code><span class="cm">$</span> <span class="hl">npx ai-nexus install</span></code></pre>
+      <ul>
+        <li>Rules link to source &mdash; <code>update</code> syncs instantly</li>
+        <li>Cannot edit rules directly (edit source instead)</li>
+      </ul>
+
+      <h3>Copy</h3>
+      <pre><code><span class="cm">$</span> <span class="hl">npx ai-nexus install --copy</span></code></pre>
+      <ul>
+        <li>Rules are independent copies</li>
+        <li>Can edit locally</li>
+        <li><code>update</code> only adds new files, never overwrites</li>
+      </ul>
+
+      <div class="callout">
+        <strong>Local priority:</strong> Existing files are never overwritten during install or update. Use <code>--force</code> to override.
+      </div>
+
+      <!-- Rule Format -->
+      <h2 id="rule-format">Rule Format</h2>
+      <p>Rules are markdown files with optional frontmatter:</p>
+      <pre><code><span class="cm">---</span>
+<span class="kw">description</span>: When to load this rule (used by semantic router)
+<span class="cm">---</span>
+
+<span class="hl"># Rule Title</span>
+
+Your rule content...</code></pre>
+      <p>Categories:</p>
+      <table>
+        <thead><tr><th>Directory</th><th>Purpose</th></tr></thead>
+        <tbody>
+          <tr><td><code>rules/</code></td><td>Coding rules (essential, security, commit conventions)</td></tr>
+          <tr><td><code>commands/</code></td><td>Slash commands (/commit, /review)</td></tr>
+          <tr><td><code>skills/</code></td><td>Domain knowledge (react, rust, python)</td></tr>
+          <tr><td><code>agents/</code></td><td>Sub-agents (code reviewer, security checker)</td></tr>
+          <tr><td><code>contexts/</code></td><td>Context files (@dev, @research)</td></tr>
+        </tbody>
+      </table>
+
+      <!-- Team Rules -->
+      <h2 id="team-rules">Team Rules</h2>
+      <p>Share rules across your team via Git:</p>
+      <pre><code><span class="cm"># Everyone installs from the same source</span>
+<span class="cm">$</span> <span class="hl">npx ai-nexus install --rules github.com/acme/team-rules</span>
+
+<span class="cm"># When rules are updated</span>
+<span class="cm">$</span> <span class="hl">npx ai-nexus update</span></code></pre>
+
+      <h3>Creating a Rules Repository</h3>
+      <div class="tree">
+<span class="dir">team-rules/</span>
+├── <span class="dir">config/</span>
+│   ├── <span class="dir">rules/</span>           <span class="cm"># Core rules</span>
+│   ├── <span class="dir">commands/</span>        <span class="cm"># Slash commands</span>
+│   ├── <span class="dir">skills/</span>          <span class="cm"># Domain knowledge</span>
+│   ├── <span class="dir">agents/</span>          <span class="cm"># Sub-agents</span>
+│   ├── <span class="dir">contexts/</span>        <span class="cm"># Context files</span>
+│   ├── <span class="dir">hooks/</span>           <span class="cm"># semantic-router.cjs</span>
+│   └── <span class="file">settings.json</span>    <span class="cm"># Claude Code hook config</span>
+└── <span class="file">README.md</span>
+      </div>
+
+      <!-- Multi-Source -->
+      <h2 id="multi-source">Multi-Source Setup</h2>
+      <p>Combine rules from multiple Git repositories:</p>
+      <pre><code><span class="cm"># Base company rules</span>
+<span class="cm">$</span> <span class="hl">npx ai-nexus install --rules github.com/acme/base-rules</span>
+
+<span class="cm"># Add frontend team rules</span>
+<span class="cm">$</span> <span class="hl">npx ai-nexus add github.com/acme/frontend-rules</span>
+
+<span class="cm"># Add security rules</span>
+<span class="cm">$</span> <span class="hl">npx ai-nexus add github.com/acme/security-rules</span>
+
+<span class="cm"># Update all at once</span>
+<span class="cm">$</span> <span class="hl">npx ai-nexus update</span></code></pre>
+
+      <!-- Community Registry -->
+      <h2 id="community">Community Registry</h2>
+      <p>Browse and download community-contributed rules directly from GitHub &mdash; no <code>npm publish</code> needed.</p>
+      <pre><code><span class="cm"># List all available rules</span>
+<span class="cm">$</span> <span class="hl">npx ai-nexus search</span>
+
+<span class="cm"># Search by keyword</span>
+<span class="cm">$</span> <span class="hl">npx ai-nexus search react</span>
+
+<span class="cm"># Download a rule</span>
+<span class="cm">$</span> <span class="hl">npx ai-nexus get react.md</span>
+
+<span class="cm"># Specify category when name exists in multiple</span>
+<span class="cm">$</span> <span class="hl">npx ai-nexus get commit.md --category commands</span></code></pre>
+      <p>Or use the web marketplace for a visual experience:</p>
+      <pre><code><span class="cm">$</span> <span class="hl">npx ai-nexus browse</span></code></pre>
+      <div class="callout">
+        <strong>Contributing:</strong> Anyone can contribute rules via PR to the <a href="https://github.com/JSK9999/ai-nexus" style="color:var(--accent)">GitHub repo</a>. Rules become available immediately after merge.
+      </div>
+    </main>
+  </div>
+
+  <footer>
+    <p>
+      Apache 2.0 License &middot;
+      <a href="https://github.com/JSK9999/ai-nexus">GitHub</a> &middot;
+      <a href="https://www.npmjs.com/package/ai-nexus">npm</a>
+    </p>
+  </footer>
+
+  <script>
+    // Sidebar active tracking on scroll
+    (function() {
+      var links = document.querySelectorAll('.sidebar a[href^="#"]');
+      var sections = [];
+      links.forEach(function(a) {
+        var id = a.getAttribute('href').slice(1);
+        var el = document.getElementById(id);
+        if (el) sections.push({ el: el, link: a });
+      });
+      function update() {
+        var scrollY = window.scrollY + 120;
+        var active = sections[0];
+        for (var i = 0; i < sections.length; i++) {
+          if (sections[i].el.offsetTop <= scrollY) active = sections[i];
+        }
+        links.forEach(function(a) { a.classList.remove('active'); });
+        if (active) active.link.classList.add('active');
+      }
+      window.addEventListener('scroll', update);
+      update();
+    })();
+  </script>
+</body>
+</html>
