@@ -139,4 +139,13 @@ program
     await doctor();
   });
 
+program
+  .command('browse')
+  .description('Open rule marketplace in browser')
+  .argument('[port]', 'Server port (default: 3847)')
+  .action(async (port) => {
+    const { browse } = await import('../dist/commands/browse.js');
+    await browse(port ? parseInt(port, 10) : 3847);
+  });
+
 program.parse();

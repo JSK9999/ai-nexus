@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ai-nexus</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#050508;--card:rgba(255,255,255,0.02);--card2:rgba(255,255,255,0.04);--cyan:#00e5ff;--purple:#a855f7;--pink:#ec4899;--green:#22c55e;--yellow:#eab308;--red:#ef4444;--text:#eeeef0;--text2:#7a7a90;--text3:#44445a;--border:rgba(255,255,255,0.05);--r:20px;--rs:12px;--font:'Inter',system-ui,sans-serif;--mono:'JetBrains Mono',monospace}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh;overflow-x:hidden}
+
+.bg-mesh{position:fixed;inset:0;z-index:0;overflow:hidden}
+.bg-mesh .orb{position:absolute;border-radius:50%;filter:blur(120px);opacity:0.07;animation:float 20s ease-in-out infinite}
+.bg-mesh .orb:nth-child(1){width:600px;height:600px;background:var(--cyan);top:-10%;left:-5%}
+.bg-mesh .orb:nth-child(2){width:500px;height:500px;background:var(--purple);bottom:-10%;right:-5%;animation-delay:-7s}
+.bg-mesh .orb:nth-child(3){width:400px;height:400px;background:var(--pink);top:50%;left:50%;transform:translate(-50%,-50%);animation-delay:-14s}
+@keyframes float{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-30px) scale(1.05)}66%{transform:translate(-20px,20px) scale(0.95)}}
+
+.noise{position:fixed;inset:0;z-index:1;opacity:0.015;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+.hdr{position:sticky;top:0;z-index:100;padding:0 2.5rem;background:rgba(5,5,8,0.7);backdrop-filter:blur(24px) saturate(1.2);border-bottom:1px solid var(--border)}
+.hdr-inner{max-width:1280px;margin:0 auto;height:60px;display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:0.7rem;font-weight:800;font-size:1rem;letter-spacing:-0.03em}
+.logo-mark{width:30px;height:30px;border-radius:10px;background:linear-gradient(135deg,var(--cyan),var(--purple));display:grid;place-items:center;font-size:0.55rem;font-weight:900;color:#000;letter-spacing:0}
+.logo-txt span{font-weight:400;color:var(--text2)}
+.hdr-r{display:flex;align-items:center;gap:1.5rem}
+.live{display:flex;align-items:center;gap:6px;font-size:0.7rem;color:var(--text2);letter-spacing:0.08em;text-transform:uppercase;font-weight:600}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 8px rgba(34,197,94,0.6);animation:blink 2s ease infinite}
+.clock{font-family:var(--mono);font-size:0.72rem;color:var(--text3)}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+
+.wrap{max-width:1280px;margin:0 auto;padding:1.5rem 2.5rem 4rem;position:relative;z-index:2}
+
+/* Tool cards */
+.tools-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.5rem}
+.tc{position:relative;padding:1.4rem;border-radius:var(--r);background:var(--card);border:1px solid var(--border);overflow:hidden;transition:all 0.3s;animation:rise 0.6s both}
+.tc:nth-child(1){animation-delay:0.05s}.tc:nth-child(2){animation-delay:0.1s}.tc:nth-child(3){animation-delay:0.15s}
+.tc:hover{transform:translateY(-2px);border-color:rgba(255,255,255,0.1);background:var(--card2)}
+.tc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.tc.ok::before{background:linear-gradient(90deg,var(--green),transparent)}
+.tc.none{opacity:0.35}.tc.none::before{background:none}
+.tc-top{display:flex;align-items:center;gap:0.6rem;margin-bottom:1rem}
+.tc-ico{width:32px;height:32px;border-radius:8px;display:grid;place-items:center;font-family:var(--mono);font-weight:700;font-size:0.7rem;border:1px solid var(--border)}
+.tc-ico.i-claude{background:rgba(0,229,255,0.06);color:var(--cyan);border-color:rgba(0,229,255,0.12)}
+.tc-ico.i-cursor{background:rgba(168,85,247,0.06);color:var(--purple);border-color:rgba(168,85,247,0.12)}
+.tc-ico.i-codex{background:rgba(236,72,153,0.06);color:var(--pink);border-color:rgba(236,72,153,0.12)}
+.tc-name{font-size:0.82rem;font-weight:700;flex:1}
+.tc-badge{font-size:0.58rem;padding:2px 8px;border-radius:20px;font-weight:600}
+.tc-badge.ok{background:rgba(34,197,94,0.1);color:var(--green)}
+.tc-badge.none{background:rgba(255,255,255,0.03);color:var(--text3)}
+.tc-num{font-size:2.4rem;font-weight:900;letter-spacing:-0.06em;line-height:1;margin-bottom:0.2rem}
+.tc-num .u{font-size:1rem;font-weight:500;color:var(--text2);margin-left:4px}
+.tc-desc{font-size:0.7rem;color:var(--text2)}
+@media(max-width:700px){.tools-row{grid-template-columns:1fr}}
+
+/* Tabs */
+.tabs{display:flex;gap:2px;margin-bottom:1.5rem;background:var(--card);border-radius:var(--rs);padding:3px;border:1px solid var(--border);width:fit-content}
+.tab{padding:0.5rem 1.2rem;border-radius:8px;font-size:0.78rem;font-weight:600;cursor:pointer;transition:all 0.2s;color:var(--text2);user-select:none}
+.tab:hover{color:var(--text)}
+.tab.active{background:rgba(255,255,255,0.06);color:var(--text)}
+.tab .cnt{font-family:var(--mono);font-size:0.65rem;color:var(--text3);margin-left:6px}
+
+/* Search */
+.search-bar{margin-bottom:1.5rem;position:relative;display:none}
+.search-bar.show{display:block}
+.search-input{width:100%;padding:0.7rem 1rem 0.7rem 2.4rem;border-radius:var(--rs);border:1px solid var(--border);background:var(--card);color:var(--text);font-family:var(--font);font-size:0.82rem;outline:none;transition:border-color 0.2s}
+.search-input:focus{border-color:rgba(0,229,255,0.3)}
+.search-input::placeholder{color:var(--text3)}
+.search-ico{position:absolute;left:0.8rem;top:50%;transform:translateY(-50%);color:var(--text3);font-size:0.85rem}
+
+/* Category filter */
+.cat-filter{display:none;gap:6px;margin-bottom:1rem;flex-wrap:wrap}
+.cat-filter.show{display:flex}
+.cat-btn{padding:4px 12px;border-radius:20px;font-size:0.7rem;font-weight:600;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--text2);transition:all 0.2s}
+.cat-btn:hover{border-color:rgba(255,255,255,0.1);color:var(--text)}
+.cat-btn.active{background:rgba(0,229,255,0.08);border-color:rgba(0,229,255,0.2);color:var(--cyan)}
+
+/* Panel */
+.panel{padding:1.6rem;border-radius:var(--r);background:var(--card);border:1px solid var(--border);margin-bottom:1rem;animation:rise 0.6s both}
+.panel-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}
+.panel-title{font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text2)}
+.panel-count{font-size:0.65rem;color:var(--text3)}
+
+/* Rule card */
+.rule{display:flex;align-items:center;padding:0.6rem 0.8rem;border-radius:var(--rs);transition:background 0.2s;gap:0.8rem;margin-bottom:2px}
+.rule:hover{background:rgba(255,255,255,0.02)}
+.rule-cat{font-family:var(--mono);font-size:0.6rem;padding:2px 8px;border-radius:12px;background:rgba(255,255,255,0.04);color:var(--text3);white-space:nowrap;min-width:70px;text-align:center}
+.rule-info{flex:1;min-width:0}
+.rule-name{font-size:0.82rem;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rule-desc{font-size:0.68rem;color:var(--text3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rule-btn{padding:4px 14px;border-radius:8px;font-size:0.68rem;font-weight:600;cursor:pointer;border:1px solid;transition:all 0.2s;white-space:nowrap}
+.rule-btn.install{border-color:rgba(0,229,255,0.3);background:rgba(0,229,255,0.06);color:var(--cyan)}
+.rule-btn.install:hover{background:rgba(0,229,255,0.15)}
+.rule-btn.installed{border-color:rgba(34,197,94,0.2);background:transparent;color:var(--green);cursor:default;opacity:0.7}
+.rule-btn.delete{border-color:rgba(239,68,68,0.2);background:rgba(239,68,68,0.04);color:var(--red)}
+.rule-btn.delete:hover{background:rgba(239,68,68,0.12)}
+.rule-btn:disabled{opacity:0.4;cursor:wait}
+
+/* Diagnostics */
+.dg{padding:0.5rem 0.8rem;border-radius:var(--rs);display:flex;align-items:center;gap:0.6rem;margin-bottom:2px}
+.dg-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.dg-dot.ok{background:var(--green)}.dg-dot.warn{background:var(--yellow)}.dg-dot.error{background:var(--red)}
+.dg-name{font-size:0.78rem;font-weight:600;flex:1}
+.dg-msg{font-size:0.68rem;color:var(--text3);max-width:55%;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* Sources */
+.src{display:flex;align-items:center;padding:0.6rem 0.8rem;border-radius:var(--rs);gap:0.8rem;margin-bottom:2px}
+.src-name{font-family:var(--mono);font-size:0.8rem;font-weight:600;flex:1}
+.src-type{font-size:0.6rem;padding:2px 8px;border-radius:12px;background:rgba(255,255,255,0.04);color:var(--text3)}
+.src-url{font-size:0.68rem;color:var(--text3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:300px}
+
+/* Footer */
+.ftr{text-align:center;padding:2rem;font-size:0.65rem;color:var(--text3);position:relative;z-index:2}
+
+/* Empty state */
+.empty{padding:2rem;text-align:center;color:var(--text3);font-size:0.8rem}
+
+/* Toast */
+.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);padding:0.6rem 1.4rem;border-radius:var(--rs);font-size:0.78rem;font-weight:600;z-index:200;animation:toastIn 0.3s both;pointer-events:none}
+.toast.ok{background:rgba(34,197,94,0.15);border:1px solid rgba(34,197,94,0.3);color:var(--green)}
+.toast.error{background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.3);color:var(--red)}
+@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+
+@keyframes rise{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:700px){.wrap{padding:1rem}.hdr{padding:0 1rem}.tabs{width:100%}.tab{flex:1;text-align:center}}
+
+.loading{display:flex;flex-direction:column;align-items:center;justify-content:center;height:70vh;gap:1.2rem;position:relative;z-index:2}
+.spinner{width:28px;height:28px;border:2px solid var(--border);border-top-color:var(--cyan);border-radius:50%;animation:spin 0.7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.load-txt{font-size:0.8rem;color:var(--text3)}
+</style>
+</head>
+<body>
+<div class="bg-mesh"><div class="orb"></div><div class="orb"></div><div class="orb"></div></div>
+<div class="noise"></div>
+
+<header class="hdr"><div class="hdr-inner">
+  <div class="logo"><div class="logo-mark">nx</div><div class="logo-txt">ai-nexus <span>browse</span></div></div>
+  <div class="hdr-r">
+    <div class="live"><span class="live-dot"></span>LIVE</div>
+    <span class="clock" id="clock"></span>
+  </div>
+</div></header>
+
+<div class="wrap">
+  <div class="loading" id="loading"><div class="spinner"></div><div class="load-txt">loading...</div></div>
+  <div id="content" style="display:none">
+    <div class="tools-row" id="toolsGrid"></div>
+
+    <div class="tabs" id="tabs">
+      <div class="tab active" data-tab="registry">Community <span class="cnt" id="regCount"></span></div>
+      <div class="tab" data-tab="installed">My Rules <span class="cnt" id="instCount"></span></div>
+      <div class="tab" data-tab="diag">Diagnostics</div>
+    </div>
+
+    <div class="search-bar show" id="searchBar">
+      <span class="search-ico">&#x1F50D;</span>
+      <input class="search-input" id="searchInput" placeholder="Search rules..." autocomplete="off">
+    </div>
+
+    <div class="cat-filter show" id="catFilter"></div>
+
+    <div id="tabRegistry"></div>
+    <div id="tabInstalled" style="display:none"></div>
+    <div id="tabDiag" style="display:none"></div>
+  </div>
+</div>
+
+<footer class="ftr">ai-nexus <span id="ver"></span></footer>
+
+<script>
+let statusData = null;
+let registryData = null;
+let activeTab = 'registry';
+let activeCat = 'all';
+let searchQuery = '';
+
+function updateClock(){document.getElementById('clock').textContent=new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',second:'2-digit'})}
+setInterval(updateClock,1000);updateClock();
+
+// Tabs
+document.getElementById('tabs').addEventListener('click', e => {
+  const tab = e.target.closest('.tab');
+  if (!tab) return;
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  tab.classList.add('active');
+  activeTab = tab.dataset.tab;
+  document.getElementById('tabRegistry').style.display = activeTab === 'registry' ? '' : 'none';
+  document.getElementById('tabInstalled').style.display = activeTab === 'installed' ? '' : 'none';
+  document.getElementById('tabDiag').style.display = activeTab === 'diag' ? '' : 'none';
+  document.getElementById('searchBar').classList.toggle('show', activeTab === 'registry');
+  document.getElementById('catFilter').classList.toggle('show', activeTab === 'registry');
+});
+
+// Search
+document.getElementById('searchInput').addEventListener('input', e => {
+  searchQuery = e.target.value.toLowerCase();
+  renderRegistry();
+});
+
+function showToast(msg, type = 'ok') {
+  const t = document.createElement('div');
+  t.className = `toast ${type}`;
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 2500);
+}
+
+function getInstalledSet() {
+  const set = new Set();
+  if (!statusData?.installed) return set;
+  for (const cat of statusData.installed) {
+    for (const f of cat.files) set.add(`${f.category}/${f.file}`);
+  }
+  return set;
+}
+
+const ICO_CLS = ['i-claude','i-cursor','i-codex'];
+const ICO_TXT = ['C','Cu','Cx'];
+const BADGE = {ok:'Active',none:'None'};
+
+function renderTools() {
+  if (!statusData?.tools) return;
+  document.getElementById('toolsGrid').innerHTML = statusData.tools.map((t,i) =>
+    `<div class="tc ${t.status}" style="animation-delay:${i*0.05+0.05}s"><div class="tc-top"><div class="tc-ico ${ICO_CLS[i]}">${ICO_TXT[i]}</div><div class="tc-name">${t.name}</div><span class="tc-badge ${t.status}">${BADGE[t.status]||t.status}</span></div><div class="tc-num">${t.count}<span class="u">${t.status==='none'?'':'files'}</span></div><div class="tc-desc">${t.detail}</div></div>`).join('');
+}
+
+function renderCatFilter() {
+  if (!registryData?.files) return;
+  const cats = [...new Set(registryData.files.map(f => f.category))].sort();
+  const el = document.getElementById('catFilter');
+  el.innerHTML = `<button class="cat-btn ${activeCat==='all'?'active':''}" data-cat="all">All</button>` +
+    cats.map(c => `<button class="cat-btn ${activeCat===c?'active':''}" data-cat="${c}">${c}</button>`).join('');
+  el.onclick = e => {
+    const btn = e.target.closest('.cat-btn');
+    if (!btn) return;
+    activeCat = btn.dataset.cat;
+    el.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderRegistry();
+  };
+}
+
+function renderRegistry() {
+  const el = document.getElementById('tabRegistry');
+  if (!registryData?.files) { el.innerHTML = '<div class="empty">Loading registry...</div>'; return; }
+
+  const installed = getInstalledSet();
+  let files = registryData.files;
+  if (activeCat !== 'all') files = files.filter(f => f.category === activeCat);
+  if (searchQuery) files = files.filter(f => f.name.toLowerCase().includes(searchQuery) || f.category.includes(searchQuery) || (f.description||'').toLowerCase().includes(searchQuery));
+
+  document.getElementById('regCount').textContent = registryData.files.length;
+
+  if (files.length === 0) { el.innerHTML = '<div class="panel"><div class="empty">No rules found</div></div>'; return; }
+
+  el.innerHTML = `<div class="panel">${files.map(f => {
+    const key = `${f.category}/${f.name}`;
+    const isInst = installed.has(key);
+    return `<div class="rule"><span class="rule-cat">${f.category}</span><div class="rule-info"><div class="rule-name">${f.name.replace('.md','')}</div><div class="rule-desc">${f.description||'—'}</div></div><button class="rule-btn ${isInst?'installed':'install'}" ${isInst?'disabled':''} onclick="installRule('${f.category}','${f.name}')">${isInst?'Installed':'Install'}</button></div>`;
+  }).join('')}</div>`;
+}
+
+function renderInstalled() {
+  const el = document.getElementById('tabInstalled');
+  if (!statusData?.installed || statusData.installed.length === 0) {
+    el.innerHTML = '<div class="panel"><div class="empty">No rules installed</div></div>';
+    document.getElementById('instCount').textContent = '0';
+    return;
+  }
+
+  let total = 0;
+  el.innerHTML = statusData.installed.map(cat => {
+    total += cat.files.length;
+    return `<div class="panel" style="animation-delay:${0.05}s"><div class="panel-hdr"><div class="panel-title">${cat.label || cat.name}</div><div class="panel-count">${cat.files.length}</div></div>${cat.files.map(f =>
+      `<div class="rule"><span class="rule-cat">${f.category}</span><div class="rule-info"><div class="rule-name">${f.name}</div><div class="rule-desc">${f.description||'—'}</div></div><button class="rule-btn delete" onclick="deleteRule('${f.category}','${f.file}')">Remove</button></div>`
+    ).join('')}</div>`;
+  }).join('');
+  document.getElementById('instCount').textContent = total;
+}
+
+function renderDiag() {
+  const el = document.getElementById('tabDiag');
+  if (!statusData?.diagnostics) { el.innerHTML = '<div class="panel"><div class="empty">No diagnostics</div></div>'; return; }
+
+  const diags = statusData.diagnostics;
+  const ok = diags.filter(d => d.status === 'ok').length;
+  el.innerHTML = `<div class="panel"><div class="panel-hdr"><div class="panel-title">System Diagnostics</div><div class="panel-count">${ok}/${diags.length} passed</div></div>${diags.map(d =>
+    `<div class="dg"><span class="dg-dot ${d.status}"></span><span class="dg-name">${d.name}</span><span class="dg-msg">${d.message}</span></div>`
+  ).join('')}</div>` +
+  (statusData.sources?.length ? `<div class="panel"><div class="panel-hdr"><div class="panel-title">Rule Sources</div><div class="panel-count">${statusData.sources.length}</div></div>${statusData.sources.map(s =>
+    `<div class="src"><span class="src-name">${s.name}</span><span class="src-type">${s.type}</span><span class="src-url">${s.url||'built-in'}</span></div>`
+  ).join('')}</div>` : '');
+}
+
+async function installRule(category, filename) {
+  const btn = event.target;
+  btn.disabled = true;
+  btn.textContent = '...';
+  try {
+    const r = await fetch('/api/install', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({category, filename}) });
+    const d = await r.json();
+    if (d.ok) { showToast(`Installed ${filename}`); await refreshStatus(); renderRegistry(); renderInstalled(); }
+    else showToast(d.error || 'Failed', 'error');
+  } catch(e) { showToast('Network error', 'error'); }
+  btn.disabled = false;
+}
+
+async function deleteRule(category, filename) {
+  if (!confirm(`Remove ${category}/${filename}?`)) return;
+  const btn = event.target;
+  btn.disabled = true;
+  try {
+    const r = await fetch('/api/file', { method: 'DELETE', headers: {'Content-Type':'application/json'}, body: JSON.stringify({category, filename}) });
+    const d = await r.json();
+    if (d.ok) { showToast(`Removed ${filename}`); await refreshStatus(); renderInstalled(); renderRegistry(); }
+    else showToast(d.error || 'Failed', 'error');
+  } catch(e) { showToast('Network error', 'error'); }
+}
+
+async function refreshStatus() {
+  statusData = await (await fetch('/api/status')).json();
+  document.getElementById('ver').textContent = 'v' + statusData.version;
+}
+
+async function init() {
+  try {
+    const [status, registry] = await Promise.all([
+      fetch('/api/status').then(r => r.json()),
+      fetch('/api/registry').then(r => r.json()),
+    ]);
+    statusData = status;
+    registryData = registry;
+    document.getElementById('ver').textContent = 'v' + status.version;
+    renderTools();
+    renderCatFilter();
+    renderRegistry();
+    renderInstalled();
+    renderDiag();
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('content').style.display = 'block';
+  } catch(e) {
+    document.getElementById('loading').innerHTML = '<div class="load-txt" style="color:var(--red)">Connection failed</div>';
+  }
+}
+init();
+setInterval(async () => { await refreshStatus(); renderTools(); renderInstalled(); renderDiag(); if(activeTab==='registry')renderRegistry(); }, 15000);
+</script>
+</body>
+</html>
