@@ -18,7 +18,7 @@ The semantic router hook analyzes keywords in prompts to **dynamically activate 
          ↓
 5. Claude Code loads only necessary rules
          ↓
-6. Token savings!
+6. Only relevant rules loaded!
 ```
 
 ## Installation

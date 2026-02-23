@@ -19,14 +19,9 @@ npx ai-nexus install
 
 ## The Problem
 
-Every time you ask Claude Code a question, it loads **all** your rules:
+Every time you ask Claude Code a question, it loads **all** your rules — React rules when you're asking about Git commits, security rules when you're styling a button.
 
-```
-Loading rules... 4,300 lines
-Token cost: ~5,000 tokens per request
-```
-
-That's tokens wasted on React rules when you're asking about Git commits.
+The more rules you add, the more tokens get wasted on every single prompt.
 
 ## The Solution
 
