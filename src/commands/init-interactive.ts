@@ -50,8 +50,8 @@ interface Selections {
 const TEMPLATES = [
   { name: '🚀 React/Next.js', value: 'react-nextjs' },
   { name: '🖥️  Node/Express', value: 'node-express' },
-  { name: '📝 기본 (최소 설정)', value: 'basic' },
-  { name: '⏭️  건너뛰기', value: null },
+  { name: '📝 Basic (minimal)', value: 'basic' },
+  { name: '⏭️  Skip', value: null },
 ];
 
 export async function initInteractive(): Promise<void> {
@@ -61,37 +61,37 @@ export async function initInteractive(): Promise<void> {
   const builtinConfigDir = path.join(PACKAGE_ROOT, 'config');
   const configInfo = scanConfigDir(builtinConfigDir);
 
-  // Step 1: 설치 범위 선택
+  // Step 1: Select scope
   const { scope } = await inquirer.prompt<{ scope: 'project' | 'global' }>([
     {
       type: 'list',
       name: 'scope',
-      message: '설치 범위를 선택하세요',
+      message: 'Select installation scope',
       choices: [
-        { name: '📁 현재 프로젝트 (.claude/, .codex/)', value: 'project' },
-        { name: '🏠 전역 설치 (~/.claude/, ~/.codex/)', value: 'global' },
+        { name: '📁 Current project (.claude/, .codex/)', value: 'project' },
+        { name: '🏠 Global (~/.claude/, ~/.codex/)', value: 'global' },
       ],
     },
   ]);
 
-  // Step 2: 도구 선택
+  // Step 2: Select tools
   const { tools } = await inquirer.prompt<{ tools: string[] }>([
     {
       type: 'checkbox',
       name: 'tools',
-      message: '설치할 도구를 선택하세요',
+      message: 'Select tools to install',
       choices: [
         { name: 'Claude Code (.claude/)', value: 'claude', checked: true },
         { name: 'Codex (.codex/)', value: 'codex', checked: false },
         { name: 'Cursor (.cursor/rules/)', value: 'cursor', checked: false },
       ],
-      validate: (input: string[]) => input.length > 0 || '최소 하나 이상 선택해주세요',
+      validate: (input: string[]) => input.length > 0 || 'Select at least one tool',
     },
   ]);
 
-  // Step 3: 카테고리 선택
+  // Step 3: Select categories
   const categoryChoices = configInfo.map(cat => ({
-    name: `${cat.name}/ (${cat.label}) - ${cat.files.length}개 파일`,
+    name: `${cat.name}/ (${cat.label}) - ${cat.files.length} files`,
     value: cat.name,
     checked: ['rules', 'commands'].includes(cat.name),
   }));
@@ -100,7 +100,7 @@ export async function initInteractive(): Promise<void> {
   if (tools.includes('claude')) {
     categoryChoices.push(
       { name: 'hooks/ (Semantic Router) - Claude Code hook', value: 'hooks', checked: true },
-      { name: 'settings.json (Claude Code 설정)', value: 'settings', checked: true }
+      { name: 'settings.json (Claude Code settings)', value: 'settings', checked: true }
     );
   }
 
@@ -108,18 +108,18 @@ export async function initInteractive(): Promise<void> {
     {
       type: 'checkbox',
       name: 'categories',
-      message: '설치할 항목을 선택하세요 (Space로 선택, Enter로 확인)',
+      message: 'Select categories to install (Space to select, Enter to confirm)',
       choices: categoryChoices,
-      validate: (input: string[]) => input.length > 0 || '최소 하나 이상 선택해주세요',
+      validate: (input: string[]) => input.length > 0 || 'Select at least one category',
     },
   ]);
 
-  // Step 4: 상세 선택 (파일별)
+  // Step 4: Detailed file selection
   const { detailSelect } = await inquirer.prompt<{ detailSelect: boolean }>([
     {
       type: 'confirm',
       name: 'detailSelect',
-      message: '파일별로 상세 선택하시겠습니까?',
+      message: 'Select individual files?',
       default: false,
     },
   ]);
@@ -145,7 +145,7 @@ export async function initInteractive(): Promise<void> {
         {
           type: 'checkbox',
           name: 'files',
-          message: `설치할 파일을 선택하세요`,
+          message: `Select files to install`,
           choices: fileChoices,
           pageSize: 15,
         },
@@ -154,7 +154,7 @@ export async function initInteractive(): Promise<void> {
       selectedFiles[category] = files;
     }
   } else {
-    // 전체 선택
+    // Select all
     for (const category of categories) {
       const catInfo = configInfo.find(c => c.name === category);
       if (catInfo) {
@@ -163,69 +163,69 @@ export async function initInteractive(): Promise<void> {
     }
   }
 
-  // Step 5: 템플릿 선택
+  // Step 5: Select template
   const { template } = await inquirer.prompt<{ template: string | null }>([
     {
       type: 'list',
       name: 'template',
-      message: '프로젝트 템플릿을 선택하세요 (CLAUDE.md 생성)',
+      message: 'Select project template (generates CLAUDE.md)',
       choices: TEMPLATES,
     },
   ]);
 
-  // Step 6: 설치 방식 선택
+  // Step 6: Select install method
   const { method } = await inquirer.prompt<{ method: 'symlink' | 'copy' }>([
     {
       type: 'list',
       name: 'method',
-      message: '설치 방식을 선택하세요',
+      message: 'Select install method',
       choices: [
         {
-          name: '🔗 symlink (ai-nexus update로 자동 업데이트)',
+          name: '🔗 symlink (auto-update via ai-nexus update)',
           value: 'symlink',
         },
         {
-          name: '📄 copy (독립적인 복사본)',
+          name: '📄 copy (independent copy)',
           value: 'copy',
         },
       ],
     },
   ]);
 
-  // Step 7: 확인
-  console.log(chalk.cyan('\n📋 설치 요약\n'));
+  // Step 7: Confirmation
+  console.log(chalk.cyan('\n📋 Installation Summary\n'));
   console.log(chalk.gray('─'.repeat(40)));
-  console.log(`   범위: ${scope === 'global' ? '전역 (~/)' : '프로젝트 (./)'}` );
-  console.log(`   도구: ${tools.join(', ')}`);
-  console.log(`   방식: ${method === 'symlink' ? 'symlink' : 'copy'}`);
-  console.log(`   템플릿: ${template || '없음'}`);
-  console.log(`   항목:`);
+  console.log(`   Scope: ${scope === 'global' ? 'Global (~/)' : 'Project (./)'}` );
+  console.log(`   Tools: ${tools.join(', ')}`);
+  console.log(`   Method: ${method === 'symlink' ? 'symlink' : 'copy'}`);
+  console.log(`   Template: ${template || 'None'}`);
+  console.log(`   Categories:`);
 
   let totalFiles = 0;
   for (const category of categories) {
     const count = selectedFiles[category]?.length || 0;
     totalFiles += count;
-    console.log(`      • ${category}/ (${count}개)`);
+    console.log(`      • ${category}/ (${count} files)`);
   }
   console.log(chalk.gray('─'.repeat(40)));
-  console.log(`   총 ${totalFiles}개 파일\n`);
+  console.log(`   Total: ${totalFiles} files\n`);
 
   const { confirmed } = await inquirer.prompt<{ confirmed: boolean }>([
     {
       type: 'confirm',
       name: 'confirmed',
-      message: '설치를 진행하시겠습니까?',
+      message: 'Proceed with installation?',
       default: true,
     },
   ]);
 
   if (!confirmed) {
-    console.log(chalk.yellow('\n취소되었습니다.\n'));
+    console.log(chalk.yellow('\nCancelled.\n'));
     return;
   }
 
-  // 설치 진행
-  const spinner = ora('설치 중...').start();
+  // Install
+  const spinner = ora('Installing...').start();
 
   try {
     await install({
@@ -236,17 +236,17 @@ export async function initInteractive(): Promise<void> {
       template,
       method,
     });
-    spinner.succeed('설치 완료!');
+    spinner.succeed('Installation complete!');
   } catch (error) {
-    spinner.fail('설치 실패');
+    spinner.fail('Installation failed');
     console.error(chalk.red(error instanceof Error ? error.message : String(error)));
     return;
   }
 
-  // 완료 메시지
+  // Completion message
   const targetDir = getTargetDir(scope);
 
-  console.log(chalk.green('\n✅ ai-nexus 설치 완료!\n'));
+  console.log(chalk.green('\n✅ ai-nexus installed successfully!\n'));
   console.log(chalk.gray('─'.repeat(40)));
 
   if (tools.includes('claude')) {
@@ -258,14 +258,14 @@ export async function initInteractive(): Promise<void> {
   if (tools.includes('cursor')) {
     console.log(`   Cursor: ${path.join(targetDir, '.cursor/rules')}`);
   }
-  console.log(`   모드: ${method}`);
+  console.log(`   Mode: ${method}`);
   if (template) {
-    console.log(`   템플릿: ${template}`);
+    console.log(`   Template: ${template}`);
   }
   console.log(chalk.gray('─'.repeat(40)));
 
   if (method === 'symlink') {
-    console.log(chalk.cyan('\n💡 팁: ai-nexus update로 최신 규칙을 동기화하세요\n'));
+    console.log(chalk.cyan('\n💡 Tip: Run "ai-nexus update" to sync latest rules\n'));
   }
 }
 
@@ -467,7 +467,7 @@ function printHeader(): void {
   console.log(chalk.cyan(`
    ╭─────────────────────────────────╮
    │                                 │
-   │   ${chalk.bold('ai-nexus')} 설치 마법사           │
+   │   ${chalk.bold('ai-nexus')} Setup Wizard           │
    │                                 │
    ╰─────────────────────────────────╯
 `));

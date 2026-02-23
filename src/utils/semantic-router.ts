@@ -3,12 +3,12 @@ import path from 'path';
 import https from 'https';
 import { detectInstall } from './files.js';
 
-// 환경변수
+// Environment variables
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const SEMANTIC_ROUTER_ENABLED = process.env.SEMANTIC_ROUTER_ENABLED === 'true';
 
-// 모델 설정
+// Model configuration
 const ANTHROPIC_MODEL = process.env.ANTHROPIC_MODEL || 'claude-3-haiku-20240307';
 const OPENAI_MODEL = process.env.OPENAI_MODEL || 'gpt-4o-mini';
 
@@ -26,7 +26,7 @@ export interface SelectResult {
 }
 
 // ─────────────────────────────────────────────
-// 파일 목록 및 설명 수집
+// File list and description collection
 // ─────────────────────────────────────────────
 
 export function getFileList(configDir: string): FileInfo[] {
@@ -41,7 +41,7 @@ export function getFileList(configDir: string): FileInfo[] {
 
     for (const entry of entries) {
       if (entry.isDirectory()) {
-        // 하위 디렉토리 처리 (예: affaan-m/)
+        // Handle subdirectories (e.g., affaan-m/)
         const subDir = path.join(dir, entry.name);
         const subFiles = fs.readdirSync(subDir).filter(f => f.endsWith('.md'));
 
@@ -65,7 +65,7 @@ function parseFileInfo(filePath: string, category: string, fileName: string): Fi
   try {
     const content = fs.readFileSync(filePath, 'utf8');
 
-    // frontmatter에서 description, keywords 추출
+    // Extract description and keywords from frontmatter
     const frontmatterMatch = content.match(/^---\n([\s\S]*?)\n---/);
     let description = '';
     let keywords: string[] = [];
@@ -81,7 +81,7 @@ function parseFileInfo(filePath: string, category: string, fileName: string): Fi
       }
     }
 
-    // description이 없으면 첫 H1에서 추출
+    // Fall back to first H1 heading if no description
     if (!description) {
       const firstLine = content.split('\n').find(l => l.startsWith('#'));
       if (firstLine) description = firstLine.replace(/^#+\s*/, '');
@@ -100,7 +100,7 @@ function parseFileInfo(filePath: string, category: string, fileName: string): Fi
 }
 
 // ─────────────────────────────────────────────
-// Claude API 호출
+// Claude API call
 // ─────────────────────────────────────────────
 
 async function callClaude(prompt: string): Promise<string> {
@@ -146,7 +146,7 @@ async function callClaude(prompt: string): Promise<string> {
 }
 
 // ─────────────────────────────────────────────
-// OpenAI API 호출
+// OpenAI API call
 // ─────────────────────────────────────────────
 
 async function callOpenAI(prompt: string): Promise<string> {
@@ -191,7 +191,7 @@ async function callOpenAI(prompt: string): Promise<string> {
 }
 
 // ─────────────────────────────────────────────
-// Semantic Router - AI 기반 파일 선택
+// Semantic Router - AI-based file selection
 // ─────────────────────────────────────────────
 
 async function selectFilesWithAI(userInput: string, fileList: FileInfo[]): Promise<string[] | null> {
@@ -199,19 +199,19 @@ async function selectFilesWithAI(userInput: string, fileList: FileInfo[]): Promi
     `- ${f.path}: ${f.description}`
   ).join('\n');
 
-  const prompt = `사용자가 AI 코딩 어시스턴트에게 다음과 같이 요청했습니다:
+  const prompt = `A user made the following request to an AI coding assistant:
 "${userInput}"
 
-다음은 사용 가능한 규칙/스킬 파일 목록입니다:
+Here are the available rule/skill files:
 ${fileListText}
 
-이 요청을 처리하는 데 꼭 필요한 파일만 선택해주세요.
-관련 없는 파일은 절대 선택하지 마세요.
+Select only the files that are essential for handling this request.
+Do not select unrelated files.
 
-응답 형식 (JSON 배열만, 다른 텍스트 없이):
+Response format (JSON array only, no other text):
 ["rules/commit.md", "commands/commit.md"]
 
-필요한 파일이 없으면 빈 배열을 반환하세요: []`;
+If no files are needed, return an empty array: []`;
 
   let response: string;
   try {
@@ -223,7 +223,7 @@ ${fileListText}
       return null;
     }
 
-    // JSON 배열 추출
+    // Extract JSON array
     const match = response.match(/\[[\s\S]*?\]/);
     if (match) {
       return JSON.parse(match[0]);
@@ -235,7 +235,7 @@ ${fileListText}
 }
 
 // ─────────────────────────────────────────────
-// 키워드 기반 폴백 (기존 방식)
+// Keyword-based fallback
 // ─────────────────────────────────────────────
 
 type CategoryFiles = {
@@ -307,7 +307,7 @@ export function selectFilesWithKeywords(userInput: string): string[] {
 }
 
 // ─────────────────────────────────────────────
-// 파일 내용 로드
+// Load file contents
 // ─────────────────────────────────────────────
 
 export function loadFile(configDir: string, filePath: string): string {
@@ -318,13 +318,13 @@ export function loadFile(configDir: string, filePath: string): string {
       return `\n<!-- ${filePath} -->\n${content}\n`;
     }
   } catch {
-    // 무시
+    // Ignore
   }
   return '';
 }
 
 // ─────────────────────────────────────────────
-// 메인 라우터 함수
+// Main router function
 // ─────────────────────────────────────────────
 
 export async function selectFiles(userInput: string): Promise<SelectResult> {
@@ -335,7 +335,7 @@ export async function selectFiles(userInput: string): Promise<SelectResult> {
 
   const configDir = path.join(install.configPath, 'config');
 
-  // Semantic Router 활성화 시 AI 사용
+  // Use AI when Semantic Router is enabled
   if (SEMANTIC_ROUTER_ENABLED && (ANTHROPIC_API_KEY || OPENAI_API_KEY)) {
     const fileList = getFileList(configDir);
     const aiSelected = await selectFilesWithAI(userInput, fileList);
@@ -345,7 +345,7 @@ export async function selectFiles(userInput: string): Promise<SelectResult> {
     }
   }
 
-  // 폴백: 키워드 방식
+  // Fallback: keyword matching
   return { files: selectFilesWithKeywords(userInput), method: 'keyword' };
 }
 
@@ -355,7 +355,7 @@ export function loadSelectedFiles(files: string[]): string {
 
   const configDir = path.join(install.configPath, 'config');
 
-  // 항상 essential.md 먼저 로드
+  // Always load essential.md first
   let output = loadFile(configDir, 'rules/essential.md');
 
   for (const filePath of files) {

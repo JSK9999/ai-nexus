@@ -9,9 +9,9 @@ import { updateRepo } from '../utils/git.js';
 import type { DotrulesMeta } from '../types.js';
 
 export interface UpdateOptions {
-  force?: boolean;      // 모든 파일 덮어쓰기
-  addOnly?: boolean;    // 새 파일만 추가
-  interactive?: boolean; // 파일별로 선택
+  force?: boolean;      // Overwrite all files
+  addOnly?: boolean;    // Add new files only
+  interactive?: boolean; // Select per file
 }
 
 export async function update(options: UpdateOptions = {}): Promise<void> {
