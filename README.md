@@ -41,7 +41,7 @@ Semantic Router activates:
   ✗ react.md (skipped)
   ✗ security.md (skipped)
 
-Token cost: ~800 tokens (84% savings)
+Loads 2-3 of 30+ rules per prompt
 ```
 
 ---
@@ -77,11 +77,11 @@ npx ai-nexus install --rules github.com/your-org/team-rules
 
 ## Supported Tools
 
-| Tool | How it works | Token Savings |
-|------|--------------|---------------|
-| **Claude Code** | Semantic Router dynamically swaps rules per prompt | ~84% |
-| **Cursor** | Semantic Search via `.mdc` description fields | ~70% |
-| **Codex** | Static `AGENTS.md` (no dynamic loading) | - |
+| Tool | How it works | Loaded per prompt |
+|------|--------------|-------------------|
+| **Claude Code** | Semantic Router dynamically swaps rules per prompt | 2-3 of 30+ rules |
+| **Cursor** | Semantic Search via `.mdc` description fields | Description-based filtering |
+| **Codex** | Static `AGENTS.md` (no dynamic loading) | All (static) |
 
 ---
 

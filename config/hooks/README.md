@@ -103,8 +103,7 @@ ANTHROPIC_API_KEY=sk-ant-xxx
 
 ## Token Savings
 
-| Method | Rules Loaded | Estimated Tokens |
-|--------|--------------|------------------|
-| Load all | All rules (15) | ~5000 tokens |
-| Semantic Router | Only needed (2-3) | ~800 tokens |
-| **Savings** | | **~84%** |
+| Method | Rules Loaded |
+|--------|--------------|
+| Load all | All 30+ rules |
+| Semantic Router | Only needed (2-3) |

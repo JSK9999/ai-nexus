@@ -41,7 +41,7 @@ Semantic Router 활성화:
   ✗ react.md (건너뜀)
   ✗ security.md (건너뜀)
 
-토큰 비용: ~800 토큰 (84% 절약)
+프롬프트당 30+ 룰 중 2-3개만 로딩
 ```
 
 ---
@@ -77,11 +77,11 @@ npx ai-nexus install --rules github.com/your-org/team-rules
 
 ## 지원 도구
 
-| 도구 | 동작 방식 | 토큰 절약 |
-|------|-----------|-----------|
-| **Claude Code** | 시맨틱 라우터가 프롬프트마다 동적으로 룰 교체 | ~84% |
-| **Cursor** | `.mdc` description 필드를 통한 시맨틱 서치 | ~70% |
-| **Codex** | 정적 `AGENTS.md` (동적 로딩 없음) | - |
+| 도구 | 동작 방식 | 프롬프트당 로딩 |
+|------|-----------|-----------------|
+| **Claude Code** | 시맨틱 라우터가 프롬프트마다 동적으로 룰 교체 | 30+ 룰 중 2-3개 |
+| **Cursor** | `.mdc` description 필드를 통한 시맨틱 서치 | Description 기반 필터링 |
+| **Codex** | 정적 `AGENTS.md` (동적 로딩 없음) | 전체 (정적) |
 
 ---
 
