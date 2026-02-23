@@ -38,11 +38,11 @@ describe('Config Scanner', () => {
 
   describe('getCategoryLabel', () => {
     it('should return correct label for rules', () => {
-      expect(getCategoryLabel('rules')).toBe('코딩 규칙');
+      expect(getCategoryLabel('rules')).toBe('Coding Rules');
     });
 
     it('should return correct label for commands', () => {
-      expect(getCategoryLabel('commands')).toBe('슬래시 커맨드');
+      expect(getCategoryLabel('commands')).toBe('Slash Commands');
     });
 
     it('should return category name for unknown category', () => {
