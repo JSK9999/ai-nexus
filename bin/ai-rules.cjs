@@ -20,7 +20,7 @@ program
   .option('-q, --quick', 'Quick mode (skip interactive wizard)')
   .option('-y, --yes', 'Skip prompts and use defaults')
   .action(async (options) => {
-    if (options.quick || options.yes) {
+    if (options.quick || options.yes || options.rules) {
       const { init } = await import('../dist/commands/init.js');
       await init({ scope: 'project', ...options });
     } else {
@@ -36,7 +36,7 @@ program
   .option('--copy', 'Copy files instead of symlink')
   .option('-q, --quick', 'Quick mode (skip interactive wizard)')
   .action(async (options) => {
-    if (options.quick) {
+    if (options.quick || options.rules) {
       const { init } = await import('../dist/commands/init.js');
       await init({ scope: 'global', ...options });
     } else {
