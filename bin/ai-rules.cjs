@@ -17,15 +17,15 @@ program
   .description('Initialize rules in current project (.claude/, .codex/)')
   .option('--rules <url>', 'Git repository URL for rules (e.g., github.com/org/my-rules)')
   .option('--copy', 'Copy files instead of symlink')
-  .option('-i, --interactive', 'Use interactive mode with file selection')
+  .option('-q, --quick', 'Quick mode (skip interactive wizard)')
   .option('-y, --yes', 'Skip prompts and use defaults')
   .action(async (options) => {
-    if (options.interactive) {
-      const { initInteractive } = await import('../dist/commands/init-interactive.js');
-      await initInteractive();
-    } else {
+    if (options.quick || options.yes) {
       const { init } = await import('../dist/commands/init.js');
       await init({ scope: 'project', ...options });
+    } else {
+      const { initInteractive } = await import('../dist/commands/init-interactive.js');
+      await initInteractive();
     }
   });
 
@@ -34,14 +34,14 @@ program
   .description('Install rules globally (~/.claude/, ~/.codex/)')
   .option('--rules <url>', 'Git repository URL for rules')
   .option('--copy', 'Copy files instead of symlink')
-  .option('-i, --interactive', 'Use interactive mode with file selection')
+  .option('-q, --quick', 'Quick mode (skip interactive wizard)')
   .action(async (options) => {
-    if (options.interactive) {
-      const { initInteractive } = await import('../dist/commands/init-interactive.js');
-      await initInteractive();
-    } else {
+    if (options.quick) {
       const { init } = await import('../dist/commands/init.js');
       await init({ scope: 'global', ...options });
+    } else {
+      const { initInteractive } = await import('../dist/commands/init-interactive.js');
+      await initInteractive();
     }
   });
 
