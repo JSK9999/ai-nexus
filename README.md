@@ -2,9 +2,9 @@
 
 # ai-nexus
 
-> Stop wasting tokens. Load only the rules you need.
+> Write rules once. Use everywhere. Save tokens.
 
-AI coding assistant rule manager for **Claude Code**, **Cursor**, and **Codex**.
+Unified rule manager for **Claude Code**, **Cursor**, and **Codex**.
 
 [![npm version](https://img.shields.io/npm/v/ai-nexus.svg)](https://www.npmjs.com/package/ai-nexus)
 [![npm downloads](https://img.shields.io/npm/dw/ai-nexus.svg)](https://www.npmjs.com/package/ai-nexus)
@@ -20,24 +20,24 @@ npx ai-nexus install
 
 ## The Problem
 
-Every time you ask Claude Code a question, it loads **all** your rules — React rules when you're asking about Git commits, security rules when you're styling a button.
-
-The more rules you add, the more tokens get wasted on every single prompt.
+Every AI coding tool has its own rule format — `.claude/rules/*.md`, `.cursor/rules/*.mdc`, `.codex/AGENTS.md`. You end up maintaining the same rules in multiple places, and they inevitably drift apart. On top of that, every prompt loads all your rules, wasting tokens on irrelevant context.
 
 ## The Solution
 
-**ai-nexus** uses a semantic router to load only relevant rules:
+**ai-nexus** lets you write rules once and distribute them across all your tools — while keeping token usage minimal with smart rule loading:
 
 ```
-You: "Write a commit message"
+Write once:
+  config/rules/commit.md
+  config/skills/react.md
 
-Semantic Router activates:
-  ✓ commit.md (needed)
-  ✓ essential.md (always on)
-  ✗ react.md (skipped)
-  ✗ security.md (skipped)
+Deploy everywhere:
+  ✓ Claude Code  → .claude/rules/ (with semantic routing)
+  ✓ Cursor       → .cursor/rules/*.mdc (auto-converted)
+  ✓ Codex        → .codex/AGENTS.md (aggregated)
 
-Add as many rules as you want — only the relevant ones are loaded.
+One source of truth. Every tool in sync.
+Only relevant rules loaded per prompt.
 ```
 
 ---

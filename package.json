@@ -1,7 +1,7 @@
 {
   "name": "ai-nexus",
   "version": "1.3.11",
-  "description": "AI coding assistant rule manager for Claude Code, Codex, and Cursor",
+  "description": "Unified rule manager for Claude Code, Cursor, and Codex - write once, use everywhere, save tokens",
   "main": "dist/index.js",
   "bin": {
     "ai-nexus": "bin/ai-rules.cjs"

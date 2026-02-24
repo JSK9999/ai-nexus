@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ai-nexus - Stop wasting tokens</title>
+  <title>ai-nexus - Write once, use everywhere, save tokens</title>
   <link rel="icon" type="image/svg+xml" href="logo.svg">
-  <meta name="description" content="AI coding assistant rule manager for Claude Code, Cursor, and Codex. Load only the rules you need.">
+  <meta name="description" content="Unified rule manager for Claude Code, Cursor, and Codex. Write rules once, deploy everywhere, and save tokens with smart rule loading.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -698,8 +698,8 @@
     <section class="hero">
       <div class="container">
         <div class="hero-badge">Open Source</div>
-        <h1>Stop wasting <span class="gradient">tokens</span></h1>
-        <p>AI coding assistant rule manager for Claude Code, Cursor, and Codex. Load only the rules you need.</p>
+        <h1>Write once, use <span class="gradient">everywhere</span></h1>
+        <p>Unified rule manager for Claude Code, Cursor, and Codex. One source of truth, smart rule loading, fewer wasted tokens.</p>
         <div class="hero-cta">
           <a href="https://github.com/JSK9999/ai-nexus" class="btn btn-primary">Get Started</a>
           <a href="docs.html" class="btn btn-secondary">Documentation</a>
@@ -739,32 +739,34 @@
     <section class="problem-solution">
       <div class="container">
         <h2 class="section-title fade-in">The Problem & Solution</h2>
-        <p class="section-subtitle fade-in">Add as many rules as you want — only the relevant ones are loaded</p>
+        <p class="section-subtitle fade-in">One source of truth, fewer wasted tokens</p>
         <div class="comparison">
           <div class="comparison-card before fade-in">
             <h3>Before</h3>
             <pre>
-Every request loads <span class="highlight">ALL</span> rules.
+Every tool has its <span class="highlight">own format</span>.
 
-React rules for Git commits?
-Security rules for styling?
+.claude/rules/*.md
+.cursor/rules/*.mdc
+.codex/AGENTS.md
 
-The more rules you add,
-the more tokens <span class="highlight">wasted every prompt</span>.</pre>
+Same rules, <span class="highlight">maintained separately</span>.
+Every prompt loads <span class="highlight">ALL</span> of them.</pre>
           </div>
           <div class="comparison-card after fade-in fade-in-delay-2">
             <h3>After</h3>
             <pre>
-You: "Write a commit message"
+Write once:
+  <span class="highlight">config/rules/commit.md</span>
+  <span class="highlight">config/skills/react.md</span>
 
-Semantic Router activates:
-  <span class="highlight">commit.md</span> (needed)
-  <span class="highlight">essential.md</span> (always on)
-  react.md (skipped)
-  security.md (skipped)
+Deploy everywhere:
+  Claude Code  (semantic routing)
+  Cursor       (auto-converted .mdc)
+  Codex        (aggregated AGENTS.md)
 
-<span class="highlight">Add as many rules as you want.</span>
-Only the relevant ones are loaded.</pre>
+<span class="highlight">One source. Every tool in sync.</span>
+<span class="highlight">Only relevant rules loaded.</span></pre>
           </div>
         </div>
       </div>
@@ -822,9 +824,9 @@ Only the relevant ones are loaded.</pre>
           </div>
           <div class="tool-card fade-in fade-in-delay-1">
             <h3>Cursor</h3>
-            <div class="method">Semantic Search (.mdc)</div>
-            <div class="savings">Filtered</div>
-            <div class="savings-label">description-based</div>
+            <div class="method">Auto-converts to .mdc</div>
+            <div class="savings">Converted</div>
+            <div class="savings-label">Cursor's search handles filtering</div>
           </div>
           <div class="tool-card fade-in fade-in-delay-2">
             <h3>Codex</h3>
@@ -905,7 +907,7 @@ Only the relevant ones are loaded.</pre>
 
     <section class="cta">
       <div class="container">
-        <h2 class="fade-in">Ready to add rules without limits?</h2>
+        <h2 class="fade-in">Ready to unify your rules and save tokens?</h2>
         <p class="fade-in">Get started in seconds with a single command.</p>
         <div class="terminal fade-in" style="margin: 0 auto;">
           <div class="terminal-header">

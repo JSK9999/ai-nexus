@@ -2,9 +2,9 @@
 
 # ai-nexus
 
-> 토큰 낭비를 멈추세요. 필요한 룰만 로드하세요.
+> 룰을 한 번 작성하세요. 어디서든 사용하세요. 토큰도 절약하세요.
 
-**Claude Code**, **Cursor**, **Codex**를 위한 AI 코딩 어시스턴트 룰 매니저.
+**Claude Code**, **Cursor**, **Codex**를 위한 통합 룰 매니저.
 
 [![npm version](https://img.shields.io/npm/v/ai-nexus.svg)](https://www.npmjs.com/package/ai-nexus)
 [![npm downloads](https://img.shields.io/npm/dw/ai-nexus.svg)](https://www.npmjs.com/package/ai-nexus)
@@ -20,24 +20,24 @@ npx ai-nexus install
 
 ## 문제
 
-Claude Code에 질문할 때마다 **모든** 룰이 로드됩니다 — Git 커밋을 물어보는데 React 룰까지, 스타일링을 하는데 보안 룰까지.
-
-룰을 추가할수록 매 프롬프트마다 낭비되는 토큰이 늘어납니다.
+AI 코딩 도구마다 룰 형식이 다릅니다 — `.claude/rules/*.md`, `.cursor/rules/*.mdc`, `.codex/AGENTS.md`. 같은 룰을 여러 곳에 관리하다 보면 결국 서로 달라집니다. 게다가 매 프롬프트마다 모든 룰이 로드되어 불필요한 토큰이 낭비됩니다.
 
 ## 해결
 
-**ai-nexus**는 시맨틱 라우터를 사용해 관련 룰만 로드합니다:
+**ai-nexus**로 룰을 한 번 작성하고 모든 도구에 배포하세요 — 스마트 룰 로딩으로 토큰 낭비도 줄입니다:
 
 ```
-You: "커밋 메시지 작성해줘"
+한 번 작성:
+  config/rules/commit.md
+  config/skills/react.md
 
-Semantic Router 활성화:
-  ✓ commit.md (필요)
-  ✓ essential.md (항상 활성)
-  ✗ react.md (건너뜀)
-  ✗ security.md (건너뜀)
+어디서든 배포:
+  ✓ Claude Code  → .claude/rules/ (시맨틱 라우팅 포함)
+  ✓ Cursor       → .cursor/rules/*.mdc (자동 변환)
+  ✓ Codex        → .codex/AGENTS.md (통합)
 
-룰을 얼마든지 추가하세요 — 필요한 것만 로딩됩니다.
+하나의 소스. 모든 도구가 동기화됩니다.
+프롬프트마다 필요한 룰만 로딩됩니다.
 ```
 
 ---

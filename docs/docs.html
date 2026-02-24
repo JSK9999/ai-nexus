@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ai-nexus - Documentation</title>
   <link rel="icon" type="image/svg+xml" href="logo.svg">
-  <meta name="description" content="ai-nexus documentation - installation, commands, configuration, and usage guide.">
+  <meta name="description" content="ai-nexus documentation - unified rule manager for Claude Code, Cursor, and Codex. Write once, use everywhere, save tokens.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -136,7 +136,7 @@
 
     <main class="content">
       <h1><span class="gradient">ai-nexus</span> Documentation</h1>
-      <p class="subtitle">AI coding assistant rule manager for Claude Code, Cursor, and Codex.</p>
+      <p class="subtitle">Unified rule manager for Claude Code, Cursor, and Codex. Write once, use everywhere, save tokens.</p>
 
       <!-- Installation -->
       <h2 id="installation">Installation</h2>
@@ -168,7 +168,7 @@
         <thead><tr><th>Tool</th><th>Method</th><th>Token overhead</th></tr></thead>
         <tbody>
           <tr><td><strong>Claude Code</strong></td><td>Semantic Router dynamically swaps rules per prompt</td><td>Only relevant rules loaded</td></tr>
-          <tr><td><strong>Cursor</strong></td><td>Semantic Search via <code>.mdc</code> description fields</td><td>Description-based filtering</td></tr>
+          <tr><td><strong>Cursor</strong></td><td>Converts rules to <code>.mdc</code> format; Cursor's built-in search handles filtering</td><td>Depends on Cursor's search</td></tr>
           <tr><td><strong>Codex</strong></td><td>Static <code>AGENTS.md</code> (no dynamic loading)</td><td>All rules loaded</td></tr>
         </tbody>
       </table>
@@ -237,8 +237,8 @@ Selected rules (3):
 <span class="kw">export</span> OPENAI_API_KEY=sk-xxx        <span class="cm"># or ANTHROPIC_API_KEY</span>
 <span class="kw">export</span> SEMANTIC_ROUTER_ENABLED=true</code></pre>
 
-      <h3>Cursor: Semantic Search</h3>
-      <p>Rules are converted to <code>.mdc</code> format with description metadata. Cursor's built-in semantic search loads rules based on relevance.</p>
+      <h3>Cursor: Rule Converter</h3>
+      <p>ai-nexus converts <code>.md</code> rules to Cursor's <code>.mdc</code> format, adding <code>description</code> and <code>alwaysApply</code> metadata automatically. After conversion, Cursor's built-in semantic search handles rule filtering &mdash; ai-nexus does not run a router for Cursor.</p>
 
       <h3>Codex: Static Rules</h3>
       <p>A single <code>AGENTS.md</code> file is loaded at session start. No dynamic loading.</p>
