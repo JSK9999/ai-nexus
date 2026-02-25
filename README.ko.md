@@ -78,10 +78,6 @@ npx ai-nexus install --rules github.com/your-org/team-rules
 
 ![list](https://raw.githubusercontent.com/JSK9999/ai-nexus/main/docs/nexus-rules.gif)
 
-**룰 마켓플레이스**
-
-![browse](https://raw.githubusercontent.com/JSK9999/ai-nexus/main/docs/nexus-browse.gif)
-
 ---
 
 ## 지원 도구
