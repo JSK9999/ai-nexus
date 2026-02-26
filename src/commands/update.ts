@@ -1,12 +1,16 @@
 import fs from 'fs';
 import path from 'path';
 import os from 'os';
+import { fileURLToPath } from 'url';
 import chalk from 'chalk';
 import inquirer from 'inquirer';
 import { detectInstall, scanDir, compareConfigs, ensureDir, computeFileHashes, aggregateToAgentsMd } from '../utils/files.js';
 import crypto from 'crypto';
 import { updateRepo } from '../utils/git.js';
 import type { DotrulesMeta } from '../types.js';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const PACKAGE_ROOT = path.resolve(__dirname, '../..');
 
 export interface UpdateOptions {
   force?: boolean;      // Overwrite all files
@@ -68,11 +72,32 @@ export async function update(options: UpdateOptions = {}): Promise<void> {
   const claudeDir = path.join(targetDir, '.claude');
 
   if (meta.mode === 'symlink') {
-    const hasExternal = meta.sources.some(s => s.type === 'external');
-    if (!hasExternal && !hasChanges) {
-      console.log(chalk.gray('  Symlink mode with built-in rules only.'));
-      console.log(chalk.gray('  Built-in rules update when you run:'));
-      console.log(chalk.bold('    npm update -g ai-nexus\n'));
+    // Sync new builtin files to ~/.ai-nexus/config/
+    const builtinConfigDir = path.join(PACKAGE_ROOT, 'config');
+    const categories = ['rules', 'commands', 'skills', 'agents', 'contexts', 'hooks'];
+    let addedCount = 0;
+
+    for (const category of categories) {
+      const srcDir = path.join(builtinConfigDir, category);
+      if (!fs.existsSync(srcDir)) continue;
+
+      const destDir = path.join(configDir, category);
+      ensureDir(destDir);
+
+      const srcFiles = scanDir(srcDir);
+      for (const [rel, content] of Object.entries(srcFiles)) {
+        const dest = path.join(destDir, rel);
+        if (!fs.existsSync(dest)) {
+          ensureDir(path.dirname(dest));
+          fs.writeFileSync(dest, content);
+          addedCount++;
+        }
+      }
+    }
+
+    if (addedCount > 0) {
+      console.log(chalk.green(`   + ${addedCount} new files added`));
+      hasChanges = true;
     }
   }
 
