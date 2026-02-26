@@ -725,7 +725,7 @@
       <div class="container">
         <div class="hero-badge">Open Source</div>
         <h1>Write once, use <span class="gradient">everywhere</span></h1>
-        <p>Unified rule manager for Claude Code, Cursor, and Codex. 30+ rules installed, only the relevant ones loaded per prompt. No more wasted tokens.</p>
+        <p>Unified rule manager for Claude Code, Cursor, and Codex. Hundreds of rules installed, only the relevant ones loaded per prompt. No more wasted tokens.</p>
         <div class="hero-cta">
           <a href="https://github.com/JSK9999/ai-nexus" class="btn btn-primary">Get Started</a>
           <a href="docs.html" class="btn btn-secondary">Documentation</a>
@@ -747,7 +747,7 @@
       <div class="container">
         <div class="stats-grid">
           <div class="stat fade-in">
-            <div class="stat-value" data-count="30" data-suffix="+">0</div>
+            <div class="stat-value" data-count="230" data-count-id="rules" data-suffix="+">0</div>
             <div class="stat-label">Rules Installed</div>
           </div>
           <div class="stat fade-in fade-in-delay-1">
@@ -765,7 +765,7 @@
     <section class="problem-solution">
       <div class="container">
         <h2 class="section-title fade-in">Why ai-nexus?</h2>
-        <p class="section-subtitle fade-in">30+ rules installed, only 2-3 loaded. One source of truth for every tool.</p>
+        <p class="section-subtitle fade-in">Hundreds of rules installed, only 2-3 loaded. One source of truth for every tool.</p>
         <div class="comparison">
           <div class="comparison-card before fade-in">
             <h3>Before</h3>
@@ -806,7 +806,7 @@ Deploy everywhere:
           <div class="feature-card fade-in">
             <div class="feature-icon">&gt;_</div>
             <h3>Load Only What You Need</h3>
-            <p>Semantic Router picks only the relevant 2-3 rules per prompt instead of loading all 30+. Less noise means better AI responses and no wasted tokens. Powered by GPT-4o-mini or Claude Haiku for ~$0.50/month.</p>
+            <p>Semantic Router picks only the relevant 2-3 rules per prompt instead of loading all of them. Less noise means better AI responses and no wasted tokens. Powered by GPT-4o-mini or Claude Haiku for ~$0.50/month.</p>
           </div>
           <div class="feature-card fade-in fade-in-delay-1">
             <div class="feature-icon">&lt;/&gt;</div>
@@ -930,7 +930,7 @@ Deploy everywhere:
     <section class="cta">
       <div class="container">
         <h2 class="fade-in">Stop wasting tokens. Load only what matters.</h2>
-        <p class="fade-in">One command. 30+ built-in rules. Only the relevant ones loaded per prompt.</p>
+        <p class="fade-in">One command. Hundreds of built-in rules. Only the relevant ones loaded per prompt.</p>
         <div class="terminal fade-in" style="margin: 0 auto;">
           <div class="terminal-header">
             <div class="terminal-dot red"></div>
@@ -990,6 +990,22 @@ Deploy everywhere:
       }
 
       setTimeout(type, 800);
+    })();
+
+    /* ---- Fetch rule count from GitHub API ---- */
+    (function () {
+      var FALLBACK_COUNT = 230;
+      var ruleCountEl = document.querySelector('[data-count-id="rules"]');
+
+      fetch('https://api.github.com/repos/JSK9999/ai-nexus/git/trees/main?recursive=1')
+        .then(function (r) { return r.json(); })
+        .then(function (tree) {
+          var count = (tree.tree || []).filter(function (item) {
+            return item.type === 'blob' && item.path.startsWith('config/') && item.path.endsWith('.md');
+          }).length;
+          if (ruleCountEl && count > 0) ruleCountEl.setAttribute('data-count', count);
+        })
+        .catch(function () {});
     })();
 
     /* ---- Count-up Animation ---- */

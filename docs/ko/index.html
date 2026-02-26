@@ -725,7 +725,7 @@
       <div class="container">
         <div class="hero-badge">Open Source</div>
         <h1>한 번 작성, <span class="gradient">어디서나</span> 사용</h1>
-        <p>Claude Code, Cursor, Codex를 위한 통합 규칙 관리자. 30개 이상의 규칙 설치, 프롬프트당 관련 규칙만 로딩. 토큰 낭비 없이.</p>
+        <p>Claude Code, Cursor, Codex를 위한 통합 규칙 관리자. 수백 개의 규칙 설치, 프롬프트당 관련 규칙만 로딩. 토큰 낭비 없이.</p>
         <div class="hero-cta">
           <a href="https://github.com/JSK9999/ai-nexus" class="btn btn-primary">시작하기</a>
           <a href="docs.html" class="btn btn-secondary">문서 보기</a>
@@ -747,7 +747,7 @@
       <div class="container">
         <div class="stats-grid">
           <div class="stat fade-in">
-            <div class="stat-value" data-count="30" data-suffix="+">0</div>
+            <div class="stat-value" data-count="230" data-count-id="rules" data-suffix="+">0</div>
             <div class="stat-label">설치된 규칙</div>
           </div>
           <div class="stat fade-in fade-in-delay-1">
@@ -765,7 +765,7 @@
     <section class="problem-solution">
       <div class="container">
         <h2 class="section-title fade-in">왜 ai-nexus인가?</h2>
-        <p class="section-subtitle fade-in">30개 이상 설치, 2-3개만 로딩. 모든 도구를 위한 하나의 소스.</p>
+        <p class="section-subtitle fade-in">수백 개 설치, 2-3개만 로딩. 모든 도구를 위한 하나의 소스.</p>
         <div class="comparison">
           <div class="comparison-card before fade-in">
             <h3>Before</h3>
@@ -806,7 +806,7 @@
           <div class="feature-card fade-in">
             <div class="feature-icon">&gt;_</div>
             <h3>필요한 것만 로딩</h3>
-            <p>시맨틱 라우터가 30개 이상 중 프롬프트당 관련 2-3개 규칙만 선택. 노이즈 감소로 더 나은 AI 응답과 토큰 절약. GPT-4o-mini 또는 Claude Haiku로 월 ~$0.50.</p>
+            <p>시맨틱 라우터가 전체 중 프롬프트당 관련 2-3개 규칙만 선택. 노이즈 감소로 더 나은 AI 응답과 토큰 절약. GPT-4o-mini 또는 Claude Haiku로 월 ~$0.50.</p>
           </div>
           <div class="feature-card fade-in fade-in-delay-1">
             <div class="feature-icon">&lt;/&gt;</div>
@@ -930,7 +930,7 @@
     <section class="cta">
       <div class="container">
         <h2 class="fade-in">토큰 낭비를 멈추세요. 필요한 것만 로딩하세요.</h2>
-        <p class="fade-in">명령어 하나. 30개 이상의 내장 규칙. 프롬프트당 관련 규칙만 로딩.</p>
+        <p class="fade-in">명령어 하나. 수백 개의 내장 규칙. 프롬프트당 관련 규칙만 로딩.</p>
         <div class="terminal fade-in" style="margin: 0 auto;">
           <div class="terminal-header">
             <div class="terminal-dot red"></div>
@@ -990,6 +990,21 @@
       }
 
       setTimeout(type, 800);
+    })();
+
+    /* ---- Fetch rule count from GitHub API ---- */
+    (function () {
+      var ruleCountEl = document.querySelector('[data-count-id="rules"]');
+
+      fetch('https://api.github.com/repos/JSK9999/ai-nexus/git/trees/main?recursive=1')
+        .then(function (r) { return r.json(); })
+        .then(function (tree) {
+          var count = (tree.tree || []).filter(function (item) {
+            return item.type === 'blob' && item.path.startsWith('config/') && item.path.endsWith('.md');
+          }).length;
+          if (ruleCountEl && count > 0) ruleCountEl.setAttribute('data-count', count);
+        })
+        .catch(function () {});
     })();
 
     /* ---- Count-up Animation ---- */
