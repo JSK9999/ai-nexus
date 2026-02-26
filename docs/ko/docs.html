@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ai-nexus - Documentation</title>
-  <link rel="icon" type="image/svg+xml" href="logo.svg">
-  <meta name="description" content="ai-nexus documentation - unified rule manager for Claude Code, Cursor, and Codex. Write once, use everywhere, save tokens.">
-  <link rel="alternate" hreflang="en" href="docs.html">
-  <link rel="alternate" hreflang="ko" href="ko/docs.html">
+  <link rel="icon" type="image/svg+xml" href="../logo.svg">
+  <meta name="description" content="ai-nexus 문서 - Claude Code, Cursor, Codex를 위한 통합 규칙 관리자. 한 번 작성, 어디서나 사용, 토큰 절약.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="alternate" hreflang="en" href="../docs.html">
+  <link rel="alternate" hreflang="ko" href="docs.html">
   <style>
     :root {
       --bg: #09090b;
@@ -37,10 +37,10 @@
     .logo { font-size: 1.25rem; font-weight: 700; color: var(--text); text-decoration: none; letter-spacing: -0.02em; }
     .nav-links { display: flex; gap: 36px; align-items: center; }
     .nav-links a { color: var(--text3); text-decoration: none; font-size: 0.875rem; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--text); }
     .lang-switch { display: flex; align-items: center; gap: 8px; margin-left: 4px; padding-left: 20px; border-left: 1px solid var(--border); }
     .lang-switch a { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.02em; }
     .lang-switch a.active { color: var(--accent); }
-    .nav-links a:hover, .nav-links a.active { color: var(--text); }
 
     /* Layout */
     .wrap { max-width: 1100px; margin: 0 auto; padding: 100px 32px 80px; display: flex; gap: 48px; }
@@ -108,15 +108,15 @@
 <body>
   <header>
     <nav>
-      <a href="./" class="logo"><img src="logo.svg" alt="" style="width:28px;height:28px;vertical-align:middle;margin-right:8px;border-radius:6px">ai-nexus</a>
+      <a href="./" class="logo"><img src="../logo.svg" alt="" style="width:28px;height:28px;vertical-align:middle;margin-right:8px;border-radius:6px">ai-nexus</a>
       <div class="nav-links">
         <a href="./">Home</a>
         <a href="docs.html" class="active">Docs</a>
         <a href="https://github.com/JSK9999/ai-nexus">GitHub</a>
         <a href="https://www.npmjs.com/package/ai-nexus">npm</a>
         <div class="lang-switch">
-          <a href="docs.html" class="active">EN</a>
-          <a href="ko/docs.html">KO</a>
+          <a href="../docs.html">EN</a>
+          <a href="docs.html" class="active">KO</a>
         </div>
       </div>
     </nav>
@@ -124,159 +124,159 @@
 
   <div class="wrap">
     <aside class="sidebar">
-      <div class="group">Getting Started</div>
-      <a href="#installation" class="active">Installation</a>
-      <a href="#quick-start">Quick Start</a>
-      <a href="#supported-tools">Supported Tools</a>
-      <div class="group">Usage</div>
-      <a href="#commands">Commands</a>
-      <a href="#browse">Browse Marketplace</a>
-      <a href="#testing">Testing Rules</a>
-      <div class="group">Configuration</div>
-      <a href="#how-it-works">How It Works</a>
-      <a href="#directory-structure">Directory Structure</a>
-      <a href="#install-modes">Install Modes</a>
-      <a href="#rule-format">Rule Format</a>
-      <div class="group">Advanced</div>
-      <a href="#team-rules">Team Rules</a>
-      <a href="#multi-source">Multi-Source</a>
-      <a href="#community">Community Registry</a>
+      <div class="group">시작하기</div>
+      <a href="#installation" class="active">설치</a>
+      <a href="#quick-start">빠른 시작</a>
+      <a href="#supported-tools">지원 도구</a>
+      <div class="group">사용법</div>
+      <a href="#commands">명령어</a>
+      <a href="#browse">마켓플레이스</a>
+      <a href="#testing">규칙 테스트</a>
+      <div class="group">설정</div>
+      <a href="#how-it-works">동작 원리</a>
+      <a href="#directory-structure">디렉토리 구조</a>
+      <a href="#install-modes">설치 모드</a>
+      <a href="#rule-format">규칙 형식</a>
+      <div class="group">고급</div>
+      <a href="#team-rules">팀 규칙</a>
+      <a href="#multi-source">멀티 소스</a>
+      <a href="#community">커뮤니티 레지스트리</a>
     </aside>
 
     <main class="content">
-      <h1><span class="gradient">ai-nexus</span> Documentation</h1>
-      <p class="subtitle">Unified rule manager for Claude Code, Cursor, and Codex. Write once, use everywhere, save tokens.</p>
+      <h1><span class="gradient">ai-nexus</span> 문서</h1>
+      <p class="subtitle">Claude Code, Cursor, Codex를 위한 통합 규칙 관리자. 한 번 작성, 어디서나 사용, 토큰 절약.</p>
 
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:48px">
         <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:20px;text-align:center">
           <div style="font-size:1.8rem;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">2-3</div>
-          <div style="color:var(--text3);font-size:0.78rem;margin-top:4px">Relevant Rules Loaded</div>
-          <div style="color:var(--text2);font-size:0.78rem;margin-top:6px">Out of 30+ installed, only what you need</div>
+          <div style="color:var(--text3);font-size:0.78rem;margin-top:4px">관련 규칙만 로딩</div>
+          <div style="color:var(--text2);font-size:0.78rem;margin-top:6px">30개 이상 설치 중 필요한 것만</div>
         </div>
         <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:20px;text-align:center">
           <div style="font-size:1.8rem;font-weight:700;background:linear-gradient(135deg,var(--green),#4ade80);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">1 &rarr; 3</div>
-          <div style="color:var(--text3);font-size:0.78rem;margin-top:4px">Write Once, Deploy Everywhere</div>
-          <div style="color:var(--text2);font-size:0.78rem;margin-top:6px">One .md file auto-converts for all tools</div>
+          <div style="color:var(--text3);font-size:0.78rem;margin-top:4px">한 번 작성, 어디서나 배포</div>
+          <div style="color:var(--text2);font-size:0.78rem;margin-top:6px">하나의 .md 파일이 모든 도구에 자동 변환</div>
         </div>
         <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:20px;text-align:center">
           <div style="font-size:1.8rem;font-weight:700;background:linear-gradient(135deg,var(--yellow),#fbbf24);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">$0.50</div>
-          <div style="color:var(--text3);font-size:0.78rem;margin-top:4px">AI Routing Cost / Month</div>
-          <div style="color:var(--text2);font-size:0.78rem;margin-top:6px">Free keyword fallback included</div>
+          <div style="color:var(--text3);font-size:0.78rem;margin-top:4px">AI 라우팅 월 비용</div>
+          <div style="color:var(--text2);font-size:0.78rem;margin-top:6px">무료 키워드 폴백 포함</div>
         </div>
       </div>
 
-      <!-- Installation -->
-      <h2 id="installation">Installation</h2>
-      <p>Install ai-nexus globally with a single command:</p>
+      <!-- 설치 -->
+      <h2 id="installation">설치</h2>
+      <p>ai-nexus를 한 줄 명령어로 전역 설치:</p>
       <pre><code><span class="cm">$</span> <span class="hl">npx ai-nexus install</span></code></pre>
-      <p>Or use interactive mode for full control over what gets installed:</p>
+      <p>또는 대화형 모드로 설치할 항목을 직접 선택:</p>
       <pre><code><span class="cm">$</span> <span class="hl">npx ai-nexus install -i</span></code></pre>
       <div class="callout">
-        <strong>Requirements:</strong> Node.js 18 or higher.
+        <strong>요구사항:</strong> Node.js 18 이상.
       </div>
 
-      <!-- Quick Start -->
-      <h2 id="quick-start">Quick Start</h2>
-      <pre><code><span class="cm"># Interactive setup (recommended)</span>
+      <!-- 빠른 시작 -->
+      <h2 id="quick-start">빠른 시작</h2>
+      <pre><code><span class="cm"># 대화형 설치 (권장)</span>
 <span class="hl">npx ai-nexus install -i</span>
 
-<span class="cm"># Quick install with defaults</span>
+<span class="cm"># 기본값으로 빠르게 설치</span>
 <span class="hl">npx ai-nexus install</span>
 
-<span class="cm"># Use your team's rules</span>
+<span class="cm"># 팀 규칙 사용</span>
 <span class="hl">npx ai-nexus install --rules github.com/your-org/team-rules</span>
 
-<span class="cm"># Install in current project only</span>
+<span class="cm"># 현재 프로젝트에만 설치</span>
 <span class="hl">npx ai-nexus init</span></code></pre>
 
-      <!-- Supported Tools -->
-      <h2 id="supported-tools">Supported Tools</h2>
+      <!-- 지원 도구 -->
+      <h2 id="supported-tools">지원 도구</h2>
       <table>
-        <thead><tr><th>Tool</th><th>Method</th><th>Token overhead</th></tr></thead>
+        <thead><tr><th>도구</th><th>방식</th><th>토큰 오버헤드</th></tr></thead>
         <tbody>
-          <tr><td><strong>Claude Code</strong></td><td>Semantic Router dynamically swaps rules per prompt</td><td>Only relevant rules loaded</td></tr>
-          <tr><td><strong>Cursor</strong></td><td>Converts rules to <code>.mdc</code> format; Cursor's built-in search handles filtering</td><td>Depends on Cursor's search</td></tr>
-          <tr><td><strong>Codex</strong></td><td>Aggregated <code>AGENTS.md</code> (rules merged into single file)</td><td>All rules loaded</td></tr>
+          <tr><td><strong>Claude Code</strong></td><td>시맨틱 라우터가 프롬프트별 규칙을 동적 교체</td><td>관련 규칙만 로딩</td></tr>
+          <tr><td><strong>Cursor</strong></td><td>규칙을 <code>.mdc</code> 형식으로 변환; Cursor 내장 검색이 필터링</td><td>Cursor 검색에 의존</td></tr>
+          <tr><td><strong>Codex</strong></td><td>통합 <code>AGENTS.md</code> (규칙을 단일 파일로 병합)</td><td>모든 규칙 로딩</td></tr>
         </tbody>
       </table>
 
-      <!-- Commands -->
-      <h2 id="commands">Commands</h2>
+      <!-- 명령어 -->
+      <h2 id="commands">명령어</h2>
       <table>
-        <thead><tr><th>Command</th><th>Description</th></tr></thead>
+        <thead><tr><th>명령어</th><th>설명</th></tr></thead>
         <tbody>
-          <tr><td><code>install</code></td><td>Install rules globally (<code>~/.claude/</code>)</td></tr>
-          <tr><td><code>install -i</code></td><td>Interactive mode &mdash; choose tools, rules, template</td></tr>
-          <tr><td><code>init</code></td><td>Install in current project (<code>.claude/</code>)</td></tr>
-          <tr><td><code>update</code></td><td>Sync latest rules (respects local changes)</td></tr>
-          <tr><td><code>list</code></td><td>Show installed rules</td></tr>
-          <tr><td><code>browse</code></td><td>Open rule marketplace in browser</td></tr>
-          <tr><td><code>test &lt;prompt&gt;</code></td><td>Preview which rules would load</td></tr>
-          <tr><td><code>search [keyword]</code></td><td>Search community rules from the registry</td></tr>
-          <tr><td><code>get &lt;filename&gt;</code></td><td>Download a rule from the community registry</td></tr>
-          <tr><td><code>add &lt;url&gt;</code></td><td>Add rules from a Git repository</td></tr>
-          <tr><td><code>remove &lt;name&gt;</code></td><td>Remove a rule source</td></tr>
-          <tr><td><code>doctor</code></td><td>Diagnose installation issues</td></tr>
-          <tr><td><code>uninstall</code></td><td>Remove ai-nexus installation</td></tr>
+          <tr><td><code>install</code></td><td>규칙을 전역으로 설치 (<code>~/.claude/</code>)</td></tr>
+          <tr><td><code>install -i</code></td><td>대화형 모드 &mdash; 도구, 규칙, 템플릿 선택</td></tr>
+          <tr><td><code>init</code></td><td>현재 프로젝트에 설치 (<code>.claude/</code>)</td></tr>
+          <tr><td><code>update</code></td><td>최신 규칙 동기화 (로컬 변경 유지)</td></tr>
+          <tr><td><code>list</code></td><td>설치된 규칙 목록 표시</td></tr>
+          <tr><td><code>browse</code></td><td>브라우저에서 규칙 마켓플레이스 열기</td></tr>
+          <tr><td><code>test &lt;prompt&gt;</code></td><td>어떤 규칙이 로딩될지 미리보기</td></tr>
+          <tr><td><code>search [keyword]</code></td><td>레지스트리에서 커뮤니티 규칙 검색</td></tr>
+          <tr><td><code>get &lt;filename&gt;</code></td><td>커뮤니티 레지스트리에서 규칙 다운로드</td></tr>
+          <tr><td><code>add &lt;url&gt;</code></td><td>Git 저장소에서 규칙 추가</td></tr>
+          <tr><td><code>remove &lt;name&gt;</code></td><td>규칙 소스 제거</td></tr>
+          <tr><td><code>doctor</code></td><td>설치 문제 진단</td></tr>
+          <tr><td><code>uninstall</code></td><td>ai-nexus 설치 제거</td></tr>
         </tbody>
       </table>
 
-      <!-- Browse Marketplace -->
-      <h2 id="browse">Browse Marketplace</h2>
-      <p>Open a web-based marketplace to search, install, and remove rules with one click:</p>
-      <pre><code><span class="cm">$</span> <span class="hl">npx ai-nexus browse</span>        <span class="cm"># default port 3847</span>
-<span class="cm">$</span> <span class="hl">npx ai-nexus browse 8080</span>   <span class="cm"># custom port</span></code></pre>
-      <p>The marketplace runs locally on <code>http://localhost:3847</code> and provides:</p>
+      <!-- 마켓플레이스 -->
+      <h2 id="browse">마켓플레이스</h2>
+      <p>웹 기반 마켓플레이스에서 규칙을 검색, 설치, 제거할 수 있습니다:</p>
+      <pre><code><span class="cm">$</span> <span class="hl">npx ai-nexus browse</span>        <span class="cm"># 기본 포트 3847</span>
+<span class="cm">$</span> <span class="hl">npx ai-nexus browse 8080</span>   <span class="cm"># 커스텀 포트</span></code></pre>
+      <p>마켓플레이스는 <code>http://localhost:3847</code>에서 로컬로 실행되며 다음을 제공합니다:</p>
       <ul>
-        <li><strong>Community tab</strong> &mdash; browse and search all community rules with category filters</li>
-        <li><strong>My Rules tab</strong> &mdash; view installed rules and remove with one click</li>
-        <li><strong>Diagnostics tab</strong> &mdash; system health checks and rule source info</li>
-        <li><strong>Tool status cards</strong> &mdash; Claude Code, Cursor, Codex at a glance</li>
+        <li><strong>커뮤니티 탭</strong> &mdash; 카테고리 필터로 모든 커뮤니티 규칙 탐색 및 검색</li>
+        <li><strong>내 규칙 탭</strong> &mdash; 설치된 규칙 확인 및 원클릭 제거</li>
+        <li><strong>진단 탭</strong> &mdash; 시스템 상태 확인 및 규칙 소스 정보</li>
+        <li><strong>도구 상태 카드</strong> &mdash; Claude Code, Cursor, Codex 한눈에 확인</li>
       </ul>
       <div style="margin:20px 0;border-radius:12px;overflow:hidden;border:1px solid var(--border)">
-        <img src="nexus-marketplace.png" alt="ai-nexus browse marketplace" style="width:100%;display:block">
+        <img src="../nexus-marketplace.png" alt="ai-nexus browse marketplace" style="width:100%;display:block">
       </div>
       <div class="callout">
-        <strong>Local only:</strong> The server runs on localhost. No data is sent externally. Install/remove only affects your local files.
+        <strong>로컬 전용:</strong> 서버는 localhost에서 실행됩니다. 외부로 데이터가 전송되지 않습니다. 설치/제거는 로컬 파일에만 영향을 줍니다.
       </div>
 
-      <!-- Testing -->
-      <h2 id="testing">Testing Rules</h2>
-      <p>Preview which rules would load for a given prompt:</p>
+      <!-- 규칙 테스트 -->
+      <h2 id="testing">규칙 테스트</h2>
+      <p>주어진 프롬프트에 대해 어떤 규칙이 로딩될지 미리보기:</p>
       <pre><code><span class="cm">$</span> <span class="hl">npx ai-nexus test "write a react component with hooks"</span>
 
 Selected rules (3):
   <span class="hl">rules/essential.md</span>
   <span class="hl">skills/react.md</span>
 
-<span class="cm">$</span> <span class="hl">npx ai-nexus test --list</span>    <span class="cm"># show all registered keywords</span></code></pre>
+<span class="cm">$</span> <span class="hl">npx ai-nexus test --list</span>    <span class="cm"># 등록된 모든 키워드 표시</span></code></pre>
 
-      <!-- How It Works -->
-      <h2 id="how-it-works">How It Works</h2>
+      <!-- 동작 원리 -->
+      <h2 id="how-it-works">동작 원리</h2>
 
-      <h3>Claude Code: Semantic Router</h3>
-      <p>A hook runs on every prompt, analyzing what rules you actually need:</p>
+      <h3>Claude Code: 시맨틱 라우터</h3>
+      <p>매 프롬프트마다 훅이 실행되어 실제로 필요한 규칙을 분석합니다:</p>
       <ul>
-        <li><strong>With AI routing</strong> (recommended) &mdash; GPT-4o-mini or Claude Haiku analyzes your prompt and picks the right rules. Cost: ~$0.50/month.</li>
-        <li><strong>Without AI</strong> (fallback) &mdash; keyword matching activates rules based on words in your prompt.</li>
+        <li><strong>AI 라우팅 사용</strong> (권장) &mdash; GPT-4o-mini 또는 Claude Haiku가 프롬프트를 분석하고 적절한 규칙을 선택. 비용: 월 ~$0.50.</li>
+        <li><strong>AI 미사용</strong> (폴백) &mdash; 키워드 매칭으로 프롬프트의 단어를 기반으로 규칙 활성화.</li>
       </ul>
-      <pre><code><span class="cm"># Enable AI routing</span>
-<span class="kw">export</span> OPENAI_API_KEY=sk-xxx        <span class="cm"># or ANTHROPIC_API_KEY</span>
+      <pre><code><span class="cm"># AI 라우팅 활성화</span>
+<span class="kw">export</span> OPENAI_API_KEY=sk-xxx        <span class="cm"># 또는 ANTHROPIC_API_KEY</span>
 <span class="kw">export</span> SEMANTIC_ROUTER_ENABLED=true</code></pre>
 
-      <h3>Cursor: Rule Converter</h3>
-      <p>ai-nexus converts <code>.md</code> rules to Cursor's <code>.mdc</code> format, adding <code>description</code> and <code>alwaysApply</code> metadata automatically. After conversion, Cursor's built-in semantic search handles rule filtering &mdash; ai-nexus does not run a router for Cursor.</p>
+      <h3>Cursor: 규칙 변환기</h3>
+      <p>ai-nexus가 <code>.md</code> 규칙을 Cursor의 <code>.mdc</code> 형식으로 변환하고, <code>description</code>과 <code>alwaysApply</code> 메타데이터를 자동 추가합니다. 변환 후 Cursor의 내장 시맨틱 검색이 규칙 필터링을 처리합니다 &mdash; ai-nexus는 Cursor용 라우터를 실행하지 않습니다.</p>
 
-      <h3>Codex: Aggregated Rules</h3>
-      <p>Individual rule files are aggregated into a single <code>AGENTS.md</code> file, which is loaded at session start. No dynamic loading.</p>
+      <h3>Codex: 통합 규칙</h3>
+      <p>개별 규칙 파일이 하나의 <code>AGENTS.md</code> 파일로 통합되며, 세션 시작 시 로딩됩니다. 동적 로딩 없음.</p>
 
-      <!-- Directory Structure -->
-      <h2 id="directory-structure">Directory Structure</h2>
+      <!-- 디렉토리 구조 -->
+      <h2 id="directory-structure">디렉토리 구조</h2>
       <div class="tree">
-<span class="dir">.ai-nexus/</span>                    <span class="cm"># ai-nexus metadata</span>
-├── <span class="dir">config/</span>                   <span class="cm"># Merged rules from all sources</span>
-├── <span class="dir">sources/</span>                  <span class="cm"># Cloned Git repositories</span>
-└── <span class="file">meta.json</span>                 <span class="cm"># Installation info</span>
+<span class="dir">.ai-nexus/</span>                    <span class="cm"># ai-nexus 메타데이터</span>
+├── <span class="dir">config/</span>                   <span class="cm"># 모든 소스에서 병합된 규칙</span>
+├── <span class="dir">sources/</span>                  <span class="cm"># 클론된 Git 저장소</span>
+└── <span class="file">meta.json</span>                 <span class="cm"># 설치 정보</span>
 
 <span class="dir">.claude/</span>                       <span class="cm"># Claude Code</span>
 ├── <span class="dir">hooks/</span><span class="file">semantic-router.cjs</span>
@@ -287,113 +287,113 @@ Selected rules (3):
 ├── <span class="dir">agents/</span>         <span class="link">→ .ai-nexus/config/agents</span>
 └── <span class="dir">contexts/</span>       <span class="link">→ .ai-nexus/config/contexts</span>
 
-<span class="dir">.cursor/rules/</span>                 <span class="cm"># Cursor (.mdc files)</span>
+<span class="dir">.cursor/rules/</span>                 <span class="cm"># Cursor (.mdc 파일)</span>
 ├── <span class="file">essential.mdc</span>
 └── <span class="file">commit.mdc</span>
 
 <span class="dir">.codex/</span><span class="file">AGENTS.md</span>               <span class="cm"># Codex</span>
       </div>
 
-      <!-- Install Modes -->
-      <h2 id="install-modes">Install Modes</h2>
+      <!-- 설치 모드 -->
+      <h2 id="install-modes">설치 모드</h2>
 
-      <h3>Symlink (default)</h3>
+      <h3>심볼릭 링크 (기본)</h3>
       <pre><code><span class="cm">$</span> <span class="hl">npx ai-nexus install</span></code></pre>
       <ul>
-        <li>Rules link to source &mdash; <code>update</code> syncs instantly</li>
-        <li>Cannot edit rules directly (edit source instead)</li>
+        <li>규칙이 소스에 연결 &mdash; <code>update</code>로 즉시 동기화</li>
+        <li>규칙을 직접 편집할 수 없음 (소스를 편집)</li>
       </ul>
 
-      <h3>Copy</h3>
+      <h3>복사</h3>
       <pre><code><span class="cm">$</span> <span class="hl">npx ai-nexus install --copy</span></code></pre>
       <ul>
-        <li>Rules are independent copies</li>
-        <li>Can edit locally</li>
-        <li><code>update</code> only adds new files, never overwrites</li>
+        <li>규칙이 독립적인 복사본</li>
+        <li>로컬에서 편집 가능</li>
+        <li><code>update</code>는 새 파일만 추가, 기존 파일 덮어쓰지 않음</li>
       </ul>
 
       <div class="callout">
-        <strong>Local priority:</strong> Existing files are never overwritten during install or update. Use <code>--force</code> to override.
+        <strong>로컬 우선:</strong> 설치 또는 업데이트 시 기존 파일을 절대 덮어쓰지 않습니다. 강제 적용하려면 <code>--force</code>를 사용하세요.
       </div>
 
-      <!-- Rule Format -->
-      <h2 id="rule-format">Rule Format</h2>
-      <p>Rules are markdown files with optional frontmatter:</p>
+      <!-- 규칙 형식 -->
+      <h2 id="rule-format">규칙 형식</h2>
+      <p>규칙은 선택적 프론트매터가 포함된 마크다운 파일입니다:</p>
       <pre><code><span class="cm">---</span>
-<span class="kw">description</span>: When to load this rule (used by semantic router)
+<span class="kw">description</span>: 이 규칙을 로딩할 시점 (시맨틱 라우터가 사용)
 <span class="cm">---</span>
 
-<span class="hl"># Rule Title</span>
+<span class="hl"># 규칙 제목</span>
 
-Your rule content...</code></pre>
-      <p>Categories:</p>
+규칙 내용...</code></pre>
+      <p>카테고리:</p>
       <table>
-        <thead><tr><th>Directory</th><th>Purpose</th></tr></thead>
+        <thead><tr><th>디렉토리</th><th>용도</th></tr></thead>
         <tbody>
-          <tr><td><code>rules/</code></td><td>Coding rules (essential, security, commit conventions)</td></tr>
-          <tr><td><code>commands/</code></td><td>Slash commands (/commit, /review)</td></tr>
-          <tr><td><code>skills/</code></td><td>Domain knowledge (react, rust, python)</td></tr>
-          <tr><td><code>agents/</code></td><td>Sub-agents (code reviewer, security checker)</td></tr>
-          <tr><td><code>contexts/</code></td><td>Context files (@dev, @research)</td></tr>
+          <tr><td><code>rules/</code></td><td>코딩 규칙 (필수, 보안, 커밋 컨벤션)</td></tr>
+          <tr><td><code>commands/</code></td><td>슬래시 명령어 (/commit, /review)</td></tr>
+          <tr><td><code>skills/</code></td><td>도메인 지식 (react, rust, python)</td></tr>
+          <tr><td><code>agents/</code></td><td>서브 에이전트 (코드 리뷰어, 보안 검사기)</td></tr>
+          <tr><td><code>contexts/</code></td><td>컨텍스트 파일 (@dev, @research)</td></tr>
         </tbody>
       </table>
 
-      <!-- Team Rules -->
-      <h2 id="team-rules">Team Rules</h2>
-      <p>Share rules across your team via Git:</p>
-      <pre><code><span class="cm"># Everyone installs from the same source</span>
+      <!-- 팀 규칙 -->
+      <h2 id="team-rules">팀 규칙</h2>
+      <p>Git을 통해 팀 전체에 규칙을 공유:</p>
+      <pre><code><span class="cm"># 모든 팀원이 동일한 소스에서 설치</span>
 <span class="cm">$</span> <span class="hl">npx ai-nexus install --rules github.com/acme/team-rules</span>
 
-<span class="cm"># When rules are updated</span>
+<span class="cm"># 규칙이 업데이트되면</span>
 <span class="cm">$</span> <span class="hl">npx ai-nexus update</span></code></pre>
 
-      <h3>Creating a Rules Repository</h3>
+      <h3>규칙 저장소 만들기</h3>
       <div class="tree">
 <span class="dir">team-rules/</span>
 ├── <span class="dir">config/</span>
-│   ├── <span class="dir">rules/</span>           <span class="cm"># Core rules</span>
-│   ├── <span class="dir">commands/</span>        <span class="cm"># Slash commands</span>
-│   ├── <span class="dir">skills/</span>          <span class="cm"># Domain knowledge</span>
-│   ├── <span class="dir">agents/</span>          <span class="cm"># Sub-agents</span>
-│   ├── <span class="dir">contexts/</span>        <span class="cm"># Context files</span>
+│   ├── <span class="dir">rules/</span>           <span class="cm"># 핵심 규칙</span>
+│   ├── <span class="dir">commands/</span>        <span class="cm"># 슬래시 명령어</span>
+│   ├── <span class="dir">skills/</span>          <span class="cm"># 도메인 지식</span>
+│   ├── <span class="dir">agents/</span>          <span class="cm"># 서브 에이전트</span>
+│   ├── <span class="dir">contexts/</span>        <span class="cm"># 컨텍스트 파일</span>
 │   ├── <span class="dir">hooks/</span>           <span class="cm"># semantic-router.cjs</span>
-│   └── <span class="file">settings.json</span>    <span class="cm"># Claude Code hook config</span>
+│   └── <span class="file">settings.json</span>    <span class="cm"># Claude Code 훅 설정</span>
 └── <span class="file">README.md</span>
       </div>
 
-      <!-- Multi-Source -->
-      <h2 id="multi-source">Multi-Source Setup</h2>
-      <p>Combine rules from multiple Git repositories:</p>
-      <pre><code><span class="cm"># Base company rules</span>
+      <!-- 멀티 소스 -->
+      <h2 id="multi-source">멀티 소스 설정</h2>
+      <p>여러 Git 저장소의 규칙을 조합:</p>
+      <pre><code><span class="cm"># 기본 회사 규칙</span>
 <span class="cm">$</span> <span class="hl">npx ai-nexus install --rules github.com/acme/base-rules</span>
 
-<span class="cm"># Add frontend team rules</span>
+<span class="cm"># 프론트엔드 팀 규칙 추가</span>
 <span class="cm">$</span> <span class="hl">npx ai-nexus add github.com/acme/frontend-rules</span>
 
-<span class="cm"># Add security rules</span>
+<span class="cm"># 보안 규칙 추가</span>
 <span class="cm">$</span> <span class="hl">npx ai-nexus add github.com/acme/security-rules</span>
 
-<span class="cm"># Update all at once</span>
+<span class="cm"># 한 번에 모두 업데이트</span>
 <span class="cm">$</span> <span class="hl">npx ai-nexus update</span></code></pre>
 
-      <!-- Community Registry -->
-      <h2 id="community">Community Registry</h2>
-      <p>Browse and download community-contributed rules directly from GitHub &mdash; no <code>npm publish</code> needed.</p>
-      <pre><code><span class="cm"># List all available rules</span>
+      <!-- 커뮤니티 레지스트리 -->
+      <h2 id="community">커뮤니티 레지스트리</h2>
+      <p>GitHub에서 커뮤니티 기여 규칙을 탐색하고 직접 다운로드 &mdash; <code>npm publish</code> 불필요.</p>
+      <pre><code><span class="cm"># 사용 가능한 모든 규칙 목록</span>
 <span class="cm">$</span> <span class="hl">npx ai-nexus search</span>
 
-<span class="cm"># Search by keyword</span>
+<span class="cm"># 키워드로 검색</span>
 <span class="cm">$</span> <span class="hl">npx ai-nexus search react</span>
 
-<span class="cm"># Download a rule</span>
+<span class="cm"># 규칙 다운로드</span>
 <span class="cm">$</span> <span class="hl">npx ai-nexus get react.md</span>
 
-<span class="cm"># Specify category when name exists in multiple</span>
+<span class="cm"># 여러 카테고리에 같은 이름이 있을 때 카테고리 지정</span>
 <span class="cm">$</span> <span class="hl">npx ai-nexus get commit.md --category commands</span></code></pre>
-      <p>Or use the web marketplace for a visual experience:</p>
+      <p>또는 웹 마켓플레이스를 사용하여 시각적으로 탐색:</p>
       <pre><code><span class="cm">$</span> <span class="hl">npx ai-nexus browse</span></code></pre>
       <div class="callout">
-        <strong>Contributing:</strong> Anyone can contribute rules via PR to the <a href="https://github.com/JSK9999/ai-nexus" style="color:var(--accent)">GitHub repo</a>. Rules become available immediately after merge.
+        <strong>기여하기:</strong> 누구나 <a href="https://github.com/JSK9999/ai-nexus" style="color:var(--accent)">GitHub 저장소</a>에 PR로 규칙을 기여할 수 있습니다. 머지 후 즉시 사용 가능합니다.
       </div>
     </main>
   </div>

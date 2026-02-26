@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ai-nexus - Write once, use everywhere, save tokens</title>
-  <link rel="icon" type="image/svg+xml" href="logo.svg">
-  <meta name="description" content="Unified rule manager for Claude Code, Cursor, and Codex. Write rules once, deploy everywhere, and save tokens with smart rule loading.">
-  <link rel="alternate" hreflang="en" href="index.html">
-  <link rel="alternate" hreflang="ko" href="ko/index.html">
+  <link rel="icon" type="image/svg+xml" href="../logo.svg">
+  <meta name="description" content="Claude Code, Cursor, Codex를 위한 통합 규칙 관리자. 규칙을 한 번 작성하고, 어디서나 배포하고, 스마트 로딩으로 토큰을 절약하세요.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="alternate" hreflang="en" href="../index.html">
+  <link rel="alternate" hreflang="ko" href="index.html">
   <style>
     :root {
       --bg: #09090b;
@@ -84,6 +84,18 @@
       align-items: center;
     }
 
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
     .lang-switch {
       display: flex;
       align-items: center;
@@ -101,18 +113,6 @@
 
     .lang-switch a.active {
       color: var(--accent);
-    }
-
-    .nav-links a {
-      color: var(--text-secondary);
-      text-decoration: none;
-      font-size: 0.875rem;
-      font-weight: 500;
-      transition: color 0.2s;
-    }
-
-    .nav-links a:hover {
-      color: var(--text);
     }
 
     /* ---- Hero ---- */
@@ -706,14 +706,14 @@
   <header>
     <div class="container">
       <nav>
-        <a href="/" class="logo"><img src="logo.svg" alt="" style="width:28px;height:28px;vertical-align:middle;margin-right:8px;border-radius:6px">ai-nexus</a>
+        <a href="../" class="logo"><img src="../logo.svg" alt="" style="width:28px;height:28px;vertical-align:middle;margin-right:8px;border-radius:6px">ai-nexus</a>
         <div class="nav-links">
           <a href="https://github.com/JSK9999/ai-nexus">GitHub</a>
           <a href="docs.html">Docs</a>
           <a href="https://www.npmjs.com/package/ai-nexus">npm</a>
           <div class="lang-switch">
-            <a href="index.html" class="active">EN</a>
-            <a href="ko/index.html">KO</a>
+            <a href="../index.html">EN</a>
+            <a href="index.html" class="active">KO</a>
           </div>
         </div>
       </nav>
@@ -724,11 +724,11 @@
     <section class="hero">
       <div class="container">
         <div class="hero-badge">Open Source</div>
-        <h1>Write once, use <span class="gradient">everywhere</span></h1>
-        <p>Unified rule manager for Claude Code, Cursor, and Codex. 30+ rules installed, only the relevant ones loaded per prompt. No more wasted tokens.</p>
+        <h1>한 번 작성, <span class="gradient">어디서나</span> 사용</h1>
+        <p>Claude Code, Cursor, Codex를 위한 통합 규칙 관리자. 30개 이상의 규칙 설치, 프롬프트당 관련 규칙만 로딩. 토큰 낭비 없이.</p>
         <div class="hero-cta">
-          <a href="https://github.com/JSK9999/ai-nexus" class="btn btn-primary">Get Started</a>
-          <a href="docs.html" class="btn btn-secondary">Documentation</a>
+          <a href="https://github.com/JSK9999/ai-nexus" class="btn btn-primary">시작하기</a>
+          <a href="docs.html" class="btn btn-secondary">문서 보기</a>
         </div>
         <div class="terminal" id="hero-terminal">
           <div class="terminal-header">
@@ -748,15 +748,15 @@
         <div class="stats-grid">
           <div class="stat fade-in">
             <div class="stat-value" data-count="30" data-suffix="+">0</div>
-            <div class="stat-label">Rules Installed</div>
+            <div class="stat-label">설치된 규칙</div>
           </div>
           <div class="stat fade-in fade-in-delay-1">
             <div class="stat-value" data-count="2" data-suffix="-3">0</div>
-            <div class="stat-label">Loaded per Prompt</div>
+            <div class="stat-label">프롬프트당 로딩</div>
           </div>
           <div class="stat fade-in fade-in-delay-2">
             <div class="stat-value" data-count="3" data-suffix="">0</div>
-            <div class="stat-label">Tools Supported</div>
+            <div class="stat-label">지원 도구</div>
           </div>
         </div>
       </div>
@@ -764,35 +764,35 @@
 
     <section class="problem-solution">
       <div class="container">
-        <h2 class="section-title fade-in">Why ai-nexus?</h2>
-        <p class="section-subtitle fade-in">30+ rules installed, only 2-3 loaded. One source of truth for every tool.</p>
+        <h2 class="section-title fade-in">왜 ai-nexus인가?</h2>
+        <p class="section-subtitle fade-in">30개 이상 설치, 2-3개만 로딩. 모든 도구를 위한 하나의 소스.</p>
         <div class="comparison">
           <div class="comparison-card before fade-in">
             <h3>Before</h3>
             <pre>
-Every tool has its <span class="highlight">own format</span>.
+도구마다 <span class="highlight">각자의 형식</span>이 존재.
 
 .claude/rules/*.md
 .cursor/rules/*.mdc
 .codex/AGENTS.md
 
-Same rules, <span class="highlight">maintained separately</span>.
-Every prompt loads <span class="highlight">ALL</span> of them.</pre>
+같은 규칙을 <span class="highlight">따로따로 관리</span>.
+매 프롬프트에 <span class="highlight">전부</span> 로딩.</pre>
           </div>
           <div class="comparison-card after fade-in fade-in-delay-2">
             <h3>After</h3>
             <pre>
-Write once:
+한 번 작성:
   <span class="highlight">config/rules/commit.md</span>
   <span class="highlight">config/skills/react.md</span>
 
-Deploy everywhere:
-  Claude Code  (semantic routing)
-  Cursor       (auto-converted .mdc)
-  Codex        (aggregated AGENTS.md)
+어디서나 배포:
+  Claude Code  (시맨틱 라우팅)
+  Cursor       (자동 변환 .mdc)
+  Codex        (통합 AGENTS.md)
 
-<span class="highlight">One source. Every tool in sync.</span>
-<span class="highlight">Only relevant rules loaded.</span></pre>
+<span class="highlight">하나의 소스. 모든 도구 동기화.</span>
+<span class="highlight">관련 규칙만 로딩.</span></pre>
           </div>
         </div>
       </div>
@@ -800,38 +800,38 @@ Deploy everywhere:
 
     <section class="features">
       <div class="container">
-        <h2 class="section-title fade-in">Key Benefits</h2>
-        <p class="section-subtitle fade-in">Concrete advantages that make a real difference</p>
+        <h2 class="section-title fade-in">핵심 장점</h2>
+        <p class="section-subtitle fade-in">실질적인 차이를 만드는 구체적인 이점</p>
         <div class="features-grid">
           <div class="feature-card fade-in">
             <div class="feature-icon">&gt;_</div>
-            <h3>Load Only What You Need</h3>
-            <p>Semantic Router picks only the relevant 2-3 rules per prompt instead of loading all 30+. Less noise means better AI responses and no wasted tokens. Powered by GPT-4o-mini or Claude Haiku for ~$0.50/month.</p>
+            <h3>필요한 것만 로딩</h3>
+            <p>시맨틱 라우터가 30개 이상 중 프롬프트당 관련 2-3개 규칙만 선택. 노이즈 감소로 더 나은 AI 응답과 토큰 절약. GPT-4o-mini 또는 Claude Haiku로 월 ~$0.50.</p>
           </div>
           <div class="feature-card fade-in fade-in-delay-1">
             <div class="feature-icon">&lt;/&gt;</div>
-            <h3>Write Once, Deploy Everywhere</h3>
-            <p>Write a single <code style="background:var(--bg-tertiary);padding:2px 6px;border-radius:4px;font-size:0.8rem">.md</code> rule. It auto-converts to <code style="background:var(--bg-tertiary);padding:2px 6px;border-radius:4px;font-size:0.8rem">.mdc</code> for Cursor and <code style="background:var(--bg-tertiary);padding:2px 6px;border-radius:4px;font-size:0.8rem">AGENTS.md</code> for Codex. No more copy-pasting across tools.</p>
+            <h3>한 번 작성, 어디서나 배포</h3>
+            <p>하나의 <code style="background:var(--bg-tertiary);padding:2px 6px;border-radius:4px;font-size:0.8rem">.md</code> 규칙 작성. Cursor용 <code style="background:var(--bg-tertiary);padding:2px 6px;border-radius:4px;font-size:0.8rem">.mdc</code>와 Codex용 <code style="background:var(--bg-tertiary);padding:2px 6px;border-radius:4px;font-size:0.8rem">AGENTS.md</code>로 자동 변환. 도구 간 복사-붙여넣기 불필요.</p>
           </div>
           <div class="feature-card fade-in fade-in-delay-2">
             <div class="feature-icon">#</div>
-            <h3>Team-Wide Consistency</h3>
-            <p>Share rules via Git. Every team member installs from the same source. One <code style="background:var(--bg-tertiary);padding:2px 6px;border-radius:4px;font-size:0.8rem">update</code> command keeps everyone in sync.</p>
+            <h3>팀 전체 일관성</h3>
+            <p>Git으로 규칙 공유. 모든 팀원이 동일한 소스에서 설치. <code style="background:var(--bg-tertiary);padding:2px 6px;border-radius:4px;font-size:0.8rem">update</code> 명령 한 번으로 전원 동기화.</p>
           </div>
           <div class="feature-card fade-in fade-in-delay-3">
             <div class="feature-icon">$</div>
-            <h3>Your Edits Stay Safe</h3>
-            <p>Install and update never overwrite your local customizations. Only new files are added. Your rules, your control.</p>
+            <h3>로컬 수정 보호</h3>
+            <p>설치 및 업데이트 시 로컬 커스터마이징을 절대 덮어쓰지 않음. 새 파일만 추가. 당신의 규칙, 당신의 통제.</p>
           </div>
           <div class="feature-card fade-in fade-in-delay-4">
             <div class="feature-icon">~</div>
-            <h3>Zero Config Setup</h3>
-            <p>One command to install. Interactive wizard guides you through tool selection, rule categories, and templates. Works out of the box with keyword fallback.</p>
+            <h3>설정 없이 바로 시작</h3>
+            <p>명령어 하나로 설치. 대화형 위저드가 도구 선택, 규칙 카테고리, 템플릿을 안내. 키워드 폴백으로 즉시 사용 가능.</p>
           </div>
           <div class="feature-card fade-in fade-in-delay-5">
             <div class="feature-icon">@</div>
-            <h3>Community Marketplace</h3>
-            <p>Browse, search, install, and remove community rules from a local web UI. Contribute via PR — rules become available instantly after merge.</p>
+            <h3>커뮤니티 마켓플레이스</h3>
+            <p>로컬 웹 UI에서 커뮤니티 규칙을 검색, 설치, 제거. PR로 기여하면 머지 후 즉시 반영.</p>
           </div>
         </div>
       </div>
@@ -839,26 +839,26 @@ Deploy everywhere:
 
     <section class="tools">
       <div class="container">
-        <h2 class="section-title fade-in">Supported Tools</h2>
-        <p class="section-subtitle fade-in">One rule file, three tools — automatically</p>
+        <h2 class="section-title fade-in">지원 도구</h2>
+        <p class="section-subtitle fade-in">하나의 규칙 파일, 세 개의 도구 - 자동으로</p>
         <div class="tools-grid">
           <div class="tool-card fade-in">
             <h3>Claude Code</h3>
-            <div class="method">Semantic Router Hook</div>
+            <div class="method">시맨틱 라우터 훅</div>
             <div class="savings">2-3</div>
-            <div class="savings-label">relevant rules loaded per prompt</div>
+            <div class="savings-label">프롬프트당 관련 규칙 로딩</div>
           </div>
           <div class="tool-card fade-in fade-in-delay-1">
             <h3>Cursor</h3>
-            <div class="method">Auto-converts .md to .mdc</div>
+            <div class="method">.md를 .mdc로 자동 변환</div>
             <div class="savings">Auto</div>
-            <div class="savings-label">format conversion + Cursor search</div>
+            <div class="savings-label">형식 변환 + Cursor 검색</div>
           </div>
           <div class="tool-card fade-in fade-in-delay-2">
             <h3>Codex</h3>
-            <div class="method">Aggregated AGENTS.md</div>
+            <div class="method">통합 AGENTS.md</div>
             <div class="savings">Unified</div>
-            <div class="savings-label">all rules in one file</div>
+            <div class="savings-label">모든 규칙을 하나의 파일로</div>
           </div>
         </div>
       </div>
@@ -866,40 +866,40 @@ Deploy everywhere:
 
     <section class="commands">
       <div class="container">
-        <h2 class="section-title fade-in">Commands</h2>
-        <p class="section-subtitle fade-in">Simple CLI for every workflow</p>
+        <h2 class="section-title fade-in">명령어</h2>
+        <p class="section-subtitle fade-in">모든 워크플로를 위한 간단한 CLI</p>
         <div class="commands-list">
           <div class="command-item fade-in">
             <code>ai-nexus install</code>
-            <span>Install rules globally (~/.claude/)</span>
+            <span>규칙을 전역으로 설치 (~/.claude/)</span>
           </div>
           <div class="command-item fade-in fade-in-delay-1">
             <code>ai-nexus install -i</code>
-            <span>Interactive mode - choose tools & rules</span>
+            <span>대화형 모드 - 도구 및 규칙 선택</span>
           </div>
           <div class="command-item fade-in fade-in-delay-1">
             <code>ai-nexus init</code>
-            <span>Install in current project</span>
+            <span>현재 프로젝트에 설치</span>
           </div>
           <div class="command-item fade-in fade-in-delay-2">
             <code>ai-nexus update</code>
-            <span>Sync latest rules (respects local changes)</span>
+            <span>최신 규칙 동기화 (로컬 변경 유지)</span>
           </div>
           <div class="command-item fade-in fade-in-delay-2">
             <code>ai-nexus doctor</code>
-            <span>Diagnose installation issues</span>
+            <span>설치 문제 진단</span>
           </div>
           <div class="command-item fade-in fade-in-delay-3">
             <code>ai-nexus browse</code>
-            <span>Open rule marketplace in browser</span>
+            <span>브라우저에서 규칙 마켓플레이스 열기</span>
           </div>
           <div class="command-item fade-in fade-in-delay-3">
             <code>ai-nexus search [keyword]</code>
-            <span>Search community rules from registry</span>
+            <span>레지스트리에서 커뮤니티 규칙 검색</span>
           </div>
           <div class="command-item fade-in fade-in-delay-4">
             <code>ai-nexus test &lt;prompt&gt;</code>
-            <span>Preview which rules would load</span>
+            <span>어떤 규칙이 로딩될지 미리보기</span>
           </div>
         </div>
       </div>
@@ -907,10 +907,10 @@ Deploy everywhere:
 
     <section class="features" style="padding:80px 0 120px">
       <div class="container" style="position:relative">
-        <h2 class="section-title fade-in">Rule Marketplace</h2>
-        <p class="section-subtitle fade-in">Browse, install, and manage rules from your browser</p>
+        <h2 class="section-title fade-in">규칙 마켓플레이스</h2>
+        <p class="section-subtitle fade-in">브라우저에서 규칙을 탐색, 설치, 관리</p>
         <div class="fade-in" style="max-width:960px;margin:0 auto;border-radius:16px;overflow:hidden;border:1px solid var(--border);box-shadow:0 20px 60px rgba(0,0,0,0.4)">
-          <img src="nexus-marketplace.png" alt="ai-nexus browse marketplace" style="width:100%;display:block">
+          <img src="../nexus-marketplace.png" alt="ai-nexus browse marketplace" style="width:100%;display:block">
         </div>
         <div style="text-align:center;margin-top:32px">
           <div class="terminal fade-in" style="margin:0 auto;max-width:360px">
@@ -929,8 +929,8 @@ Deploy everywhere:
 
     <section class="cta">
       <div class="container">
-        <h2 class="fade-in">Stop wasting tokens. Load only what matters.</h2>
-        <p class="fade-in">One command. 30+ built-in rules. Only the relevant ones loaded per prompt.</p>
+        <h2 class="fade-in">토큰 낭비를 멈추세요. 필요한 것만 로딩하세요.</h2>
+        <p class="fade-in">명령어 하나. 30개 이상의 내장 규칙. 프롬프트당 관련 규칙만 로딩.</p>
         <div class="terminal fade-in" style="margin: 0 auto;">
           <div class="terminal-header">
             <div class="terminal-dot red"></div>
