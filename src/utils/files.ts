@@ -14,7 +14,7 @@ export function scanDir(dir: string, base = ''): ScanResult {
   const entries = fs.readdirSync(dir, { withFileTypes: true });
   for (const entry of entries) {
     const fullPath = path.join(dir, entry.name);
-    const relPath = base ? path.join(base, entry.name) : entry.name;
+    const relPath = base ? [base, entry.name].join('/') : entry.name;
 
     if (entry.isDirectory()) {
       Object.assign(result, scanDir(fullPath, relPath));
