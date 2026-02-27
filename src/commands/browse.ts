@@ -218,7 +218,7 @@ export async function browse(port = 3847): Promise<void> {
     }
   });
 
-  server.listen(port, () => {
+  server.listen(port, '127.0.0.1', () => {
     console.log(`\n  ai-nexus browse: http://localhost:${port}`);
     console.log(`  Ctrl+C to quit\n`);
     openBrowser(`http://localhost:${port}`);
