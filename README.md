@@ -105,16 +105,16 @@ A hook runs on every prompt, analyzing what rules you actually need:
 └── rules-inactive/           # Parked rules (not loaded)
 ```
 
-**With AI routing** (recommended):
+**With AI routing** (optional):
 ```bash
 export OPENAI_API_KEY=sk-xxx        # or ANTHROPIC_API_KEY
 export SEMANTIC_ROUTER_ENABLED=true
 ```
 
-GPT-4o-mini or Claude Haiku analyzes your prompt and picks the right rules. Cost: ~$0.50/month.
+GPT-4o-mini or Claude Haiku analyzes your prompt and picks the right rules. Cost: ~$0.50/month. Requires explicit opt-in.
 
-**Without AI** (fallback):
-Keyword matching activates rules based on words in your prompt.
+**Without AI** (default):
+Keyword matching activates rules based on words in your prompt. Zero cost, no API key needed.
 
 ### Cursor: Rule Converter
 

@@ -105,16 +105,16 @@ npx ai-nexus install --rules github.com/your-org/team-rules
 └── rules-inactive/           # 비활성 룰 (로드 안 됨)
 ```
 
-**AI 라우팅 사용** (권장):
+**AI 라우팅 사용** (선택):
 ```bash
 export OPENAI_API_KEY=sk-xxx        # 또는 ANTHROPIC_API_KEY
 export SEMANTIC_ROUTER_ENABLED=true
 ```
 
-GPT-4o-mini 또는 Claude Haiku가 프롬프트를 분석해 적절한 룰을 선택합니다. 비용: 월 ~$0.50.
+GPT-4o-mini 또는 Claude Haiku가 프롬프트를 분석해 적절한 룰을 선택합니다. 비용: 월 ~$0.50. 명시적으로 활성화해야 동작합니다.
 
-**AI 없이** (폴백):
-프롬프트의 키워드를 매칭해서 룰을 활성화합니다.
+**AI 없이** (기본값):
+프롬프트의 키워드를 매칭해서 룰을 활성화합니다. 비용 없음, API 키 불필요.
 
 ### Cursor: 룰 변환기
 
