@@ -17,8 +17,11 @@ export async function get(filename: string, options: GetOptions): Promise<void> 
   try {
     const allFiles = await fetchRegistry();
 
-    // Find matching files
-    const matches = allFiles.filter(f => f.name === filename);
+    // Find matching files - support both "react.md" and "skills/react.md"
+    const parts = filename.split('/');
+    const matches = parts.length >= 2
+      ? allFiles.filter(f => f.category === parts[0] && f.name === parts.slice(1).join('/'))
+      : allFiles.filter(f => f.name === filename);
 
     if (matches.length === 0) {
       spinner.stop();
