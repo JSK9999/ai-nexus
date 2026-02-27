@@ -286,6 +286,27 @@ npx ai-nexus update
 
 ---
 
+## Network & Privacy
+
+ai-nexus runs locally. Here is a complete list of network requests the tool may make:
+
+| When | Destination | Purpose | Required? |
+|------|-------------|---------|-----------|
+| Semantic routing (per prompt) | `api.openai.com` | AI-powered rule selection via GPT-4o-mini | **Opt-in only** — requires `SEMANTIC_ROUTER_ENABLED=true` + `OPENAI_API_KEY` |
+| Semantic routing (per prompt) | `api.anthropic.com` | AI-powered rule selection via Claude Haiku | **Opt-in only** — requires `SEMANTIC_ROUTER_ENABLED=true` + `ANTHROPIC_API_KEY` |
+| `search`, `get`, `browse` | `api.github.com` | Fetch community rule registry | Only when you run these commands |
+| `get` | `raw.githubusercontent.com` | Download rule file content | Only when you run `get` |
+| `browse` | `localhost:3847` | Local-only HTTP server for marketplace UI | Bound to `127.0.0.1` — not accessible from other machines |
+| `install --rules <url>` | Git remote host | Clone a team rules repository | Only when you provide a `--rules` URL |
+
+**No telemetry. No analytics. No external data collection.**
+
+- API keys are read from environment variables only — never stored on disk or logged.
+- Your prompts are sent to OpenAI/Anthropic **only** when semantic routing is explicitly enabled. Without it, keyword-based fallback runs entirely offline.
+- The `browse` server binds to `127.0.0.1` and is not accessible from the network.
+
+---
+
 ## Rule Marketplace
 
 ![browse](https://raw.githubusercontent.com/JSK9999/ai-nexus/main/docs/nexus-marketplace.png)

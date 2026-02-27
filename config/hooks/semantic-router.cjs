@@ -9,7 +9,7 @@ const RULES_DIR = fs.existsSync(_projectRules)
   ? _projectRules
   : path.join(os.homedir(), '.claude/rules');
 const INACTIVE_DIR = RULES_DIR.replace(/rules$/, 'rules-inactive');
-const SEMANTIC_ROUTER_ENABLED = process.env.SEMANTIC_ROUTER_ENABLED !== 'false';
+const SEMANTIC_ROUTER_ENABLED = process.env.SEMANTIC_ROUTER_ENABLED === 'true';
 
 // Static keyword map (fallback for files without frontmatter)
 const STATIC_KEYWORD_MAP = {

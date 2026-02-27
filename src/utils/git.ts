@@ -1,4 +1,4 @@
-import { execSync } from 'child_process';
+import { execSync, spawnSync } from 'child_process';
 import fs from 'fs';
 
 export interface RuleSource {
@@ -47,10 +47,13 @@ export function cloneRepo(url: string, targetDir: string): void {
       stdio: 'pipe',
     });
   } else {
-    // Clone new repo
-    execSync(`git clone --depth 1 ${normalizedUrl} "${targetDir}"`, {
+    // Clone new repo (use spawnSync to avoid command injection)
+    const result = spawnSync('git', ['clone', '--depth', '1', normalizedUrl, targetDir], {
       stdio: 'pipe',
     });
+    if (result.status !== 0) {
+      throw new Error(`git clone failed: ${result.stderr?.toString() || 'unknown error'}`);
+    }
   }
 }
 
