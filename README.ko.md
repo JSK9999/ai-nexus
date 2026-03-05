@@ -114,6 +114,8 @@ export SEMANTIC_ROUTER_ENABLED=true
 
 GPT-4o-mini 또는 Claude Haiku가 프롬프트를 분석해 적절한 룰을 선택합니다. 비용: 월 ~$0.50. 명시적으로 활성화해야 동작합니다.
 
+> **상세 설정 가이드:** [시맨틱 라우터 설정](https://jsk9999.github.io/ai-nexus/docs.html#semantic-router-setup) — 프로바이더 선택, 환경 변수, 커스텀 모델, 동작 확인 방법.
+
 **AI 없이** (기본값):
 프롬프트의 키워드를 매칭해서 룰을 활성화합니다. 비용 없음, API 키 불필요.
 

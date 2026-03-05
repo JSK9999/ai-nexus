@@ -138,6 +138,7 @@
       <a href="#update-local-priority">업데이트 & 로컬 우선</a>
       <a href="#rule-format">규칙 형식</a>
       <div class="group">고급</div>
+      <a href="#semantic-router-setup">시맨틱 라우터 설정</a>
       <a href="#team-rules">팀 규칙</a>
       <a href="#multi-source">멀티 소스</a>
       <a href="#community">커뮤니티 레지스트리</a>
@@ -340,6 +341,54 @@ Selected rules (3):
           <tr><td><code>contexts/</code></td><td>컨텍스트 파일 (@dev, @research)</td></tr>
         </tbody>
       </table>
+
+      <!-- 시맨틱 라우터 설정 -->
+      <h2 id="semantic-router-setup">시맨틱 라우터 설정</h2>
+      <p>기본적으로 ai-nexus는 <strong>키워드 매칭</strong>으로 규칙을 선택합니다 — API 키 불필요, 비용 없음. 더 정확한 규칙 선택을 원하면 AI 라우팅을 활성화하세요.</p>
+
+      <h3>1단계: 프로바이더 선택</h3>
+      <table>
+        <thead><tr><th>프로바이더</th><th>모델</th><th>비용</th></tr></thead>
+        <tbody>
+          <tr><td>OpenAI</td><td>gpt-4o-mini (기본값)</td><td>월 ~$0.50</td></tr>
+          <tr><td>Anthropic</td><td>claude-3-haiku (기본값)</td><td>월 ~$0.50</td></tr>
+        </tbody>
+      </table>
+      <p>하나의 프로바이더만 있으면 됩니다. 두 키 모두 설정된 경우 Anthropic이 우선 사용됩니다.</p>
+
+      <h3>2단계: 환경 변수 설정</h3>
+      <p>셸 프로필 (<code>~/.zshrc</code>, <code>~/.bashrc</code>, 또는 <code>~/.bash_profile</code>)에 다음을 추가하세요:</p>
+      <pre><code><span class="cm"># 방법 A: OpenAI</span>
+<span class="kw">export</span> OPENAI_API_KEY=sk-xxx
+<span class="kw">export</span> SEMANTIC_ROUTER_ENABLED=true
+
+<span class="cm"># 방법 B: Anthropic</span>
+<span class="kw">export</span> ANTHROPIC_API_KEY=sk-ant-xxx
+<span class="kw">export</span> SEMANTIC_ROUTER_ENABLED=true</code></pre>
+      <p>셸을 다시 로드하세요:</p>
+      <pre><code><span class="cm">$</span> <span class="hl">source ~/.zshrc</span></code></pre>
+
+      <h3>3단계: 커스텀 모델 (선택사항)</h3>
+      <p>기본 모델 대신 다른 모델을 사용하려면 환경 변수로 지정하세요:</p>
+      <pre><code><span class="cm"># 다른 OpenAI 모델 사용</span>
+<span class="kw">export</span> OPENAI_MODEL=gpt-4o
+
+<span class="cm"># 다른 Anthropic 모델 사용</span>
+<span class="kw">export</span> ANTHROPIC_MODEL=claude-3-5-haiku-20241022</code></pre>
+
+      <h3>4단계: 확인</h3>
+      <p>시맨틱 라우터가 정상 작동하는지 테스트하세요:</p>
+      <pre><code><span class="cm">$</span> <span class="hl">npx ai-nexus test "write a react component"</span>
+
+Selected rules (semantic):
+  • rules/essential.md
+  • skills/react.md
+  • rules/typescript.md</code></pre>
+      <p>출력에 <code>(semantic)</code>이 표시되면 AI 라우팅이 활성화된 것입니다. <code>(keyword)</code>가 표시되면 API 키와 <code>SEMANTIC_ROUTER_ENABLED</code> 설정을 확인하세요.</p>
+
+      <div class="callout">
+        <strong>보안 참고:</strong> API 키는 환경 변수에서만 읽히며, ai-nexus가 디스크에 저장하거나 로그에 기록하지 않습니다.
+      </div>
 
       <!-- 팀 규칙 -->
       <h2 id="team-rules">팀 규칙</h2>
