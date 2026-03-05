@@ -114,6 +114,8 @@ export SEMANTIC_ROUTER_ENABLED=true
 
 GPT-4o-mini or Claude Haiku analyzes your prompt and picks the right rules. Cost: ~$0.50/month. Requires explicit opt-in.
 
+> **Full setup guide:** [Semantic Router Setup](https://jsk9999.github.io/ai-nexus/docs.html#semantic-router-setup) — provider selection, environment variables, custom models, and verification.
+
 **Without AI** (default):
 Keyword matching activates rules based on words in your prompt. Zero cost, no API key needed.
 
